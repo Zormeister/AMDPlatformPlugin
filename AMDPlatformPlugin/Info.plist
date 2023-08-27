@@ -52,9 +52,9 @@
 	<string>1.0</string>
 	<key>OSBundleLibraries</key>
 	<dict>
-		<key>com.apple.iokit.IOHIDFamily</key>
+		<key>com.apple.iokit.IOPlatformPluginFamily</key>
 		<string>1.0.0b1</string>
-		<key>com.apple.iokit.IOPCIFamily</key>
+		<key>com.apple.iokit.IOACPIFamily</key>
 		<string>1.0.0b1</string>
 		<key>com.apple.kpi.bsd</key>
 		<string>10.0.0</string>
