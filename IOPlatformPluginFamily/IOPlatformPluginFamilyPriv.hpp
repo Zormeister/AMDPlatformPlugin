@@ -4,4 +4,21 @@
 #pragma once
 #include "IOPlatformPluginFamily.hpp"
 
+enum {
+	kIOPPFSleepFactorSSD,
+	kIOPPFSleepFactorHibernateModeOn,
+	kIOPPFSleepFactorHibernateModeSleep,
+	kIOPPFSleepFactorSleepTimerWake,
+	kIOPPFSleepFactorLastSleepS3,
+	kIOPPFSleepFactorLastSleepStandby,
+	kIOPPFSleepFactorLastSleepErP,
+	kIOPPFSleepFactorLastSleepHibernate,
+	kIOPPFSleepFactorAtMostTwoExternalHIDDevices,
+	kIOPPFSleepFactorAtMostOneExternalDisplay,
+	kIOPPFSleepFactorErPPolling,
+	kIOPPFSleepFactorErPNoDelay,
+	kIOPPFSleepFactorRTCAlarmScheduled,
+	kIOPPFSleepFactorLastSleepDeepIdle,
+};
+
 class IOPlatformPluginFamilyPriv : public IOPlatformPluginFamily {};
