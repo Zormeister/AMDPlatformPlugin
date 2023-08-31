@@ -10,9 +10,6 @@
 		CE8DA0832517C41A008C44E8 /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8DA0822517C41A008C44E8 /* libkmod.a */; };
 		F0A45CBF2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0A45CBD2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp */; };
 		F0A45CC02A99E60C00FD0C00 /* AMDPlatformPlugin.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F0A45CBE2A99E60C00FD0C00 /* AMDPlatformPlugin.hpp */; };
-		F0E2A2022A9C408600E161B6 /* CPUChecker.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F0E2A2012A9C408600E161B6 /* CPUChecker.hpp */; };
-		F0E2A2042A9C408600E161B6 /* CPUChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0E2A2032A9C408600E161B6 /* CPUChecker.cpp */; };
-		F0E2A20B2A9C599500E161B6 /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E2A20A2A9C596B00E161B6 /* libkmod.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,10 +34,6 @@
 		F04BC4B42A9B765B0000761E /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = usr/lib/libkmod.a; sourceTree = SDKROOT; };
 		F0A45CBD2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPlatformPlugin.cpp; sourceTree = "<group>"; };
 		F0A45CBE2A99E60C00FD0C00 /* AMDPlatformPlugin.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPlatformPlugin.hpp; sourceTree = "<group>"; };
-		F0E2A1FF2A9C408600E161B6 /* CPUChecker.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CPUChecker.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		F0E2A2012A9C408600E161B6 /* CPUChecker.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CPUChecker.hpp; sourceTree = "<group>"; };
-		F0E2A2032A9C408600E161B6 /* CPUChecker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CPUChecker.cpp; sourceTree = "<group>"; };
-		F0E2A2052A9C408600E161B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0E2A20A2A9C596B00E161B6 /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,14 +46,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F0E2A1FC2A9C408600E161B6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F0E2A20B2A9C599500E161B6 /* libkmod.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -69,7 +54,6 @@
 			children = (
 				F02031FF2A9AE3150099AC1D /* IOPlatformPluginFamily */,
 				1C748C291C21952C0024EED2 /* AMDPlatformPlugin */,
-				F0E2A2002A9C408600E161B6 /* CPUChecker */,
 				1C748C281C21952C0024EED2 /* Products */,
 				CE8DA0812517C41A008C44E8 /* Frameworks */,
 			);
@@ -80,7 +64,6 @@
 			isa = PBXGroup;
 			children = (
 				1C748C271C21952C0024EED2 /* AMDPlatformPlugin.kext */,
-				F0E2A1FF2A9C408600E161B6 /* CPUChecker.kext */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,16 +97,6 @@
 			path = IOPlatformPluginFamily;
 			sourceTree = "<group>";
 		};
-		F0E2A2002A9C408600E161B6 /* CPUChecker */ = {
-			isa = PBXGroup;
-			children = (
-				F0E2A2012A9C408600E161B6 /* CPUChecker.hpp */,
-				F0E2A2032A9C408600E161B6 /* CPUChecker.cpp */,
-				F0E2A2052A9C408600E161B6 /* Info.plist */,
-			);
-			path = CPUChecker;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -132,14 +105,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0A45CC02A99E60C00FD0C00 /* AMDPlatformPlugin.hpp in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F0E2A1FA2A9C408600E161B6 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F0E2A2022A9C408600E161B6 /* CPUChecker.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,24 +130,6 @@
 			productReference = 1C748C271C21952C0024EED2 /* AMDPlatformPlugin.kext */;
 			productType = "com.apple.product-type.kernel-extension";
 		};
-		F0E2A1FE2A9C408600E161B6 /* CPUChecker */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F0E2A2062A9C408600E161B6 /* Build configuration list for PBXNativeTarget "CPUChecker" */;
-			buildPhases = (
-				F0E2A1FA2A9C408600E161B6 /* Headers */,
-				F0E2A1FB2A9C408600E161B6 /* Sources */,
-				F0E2A1FC2A9C408600E161B6 /* Frameworks */,
-				F0E2A1FD2A9C408600E161B6 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = CPUChecker;
-			productName = CPUChecker;
-			productReference = F0E2A1FF2A9C408600E161B6 /* CPUChecker.kext */;
-			productType = "com.apple.product-type.kernel-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -194,10 +141,6 @@
 				TargetAttributes = {
 					1C748C261C21952C0024EED2 = {
 						CreatedOnToolsVersion = 7.2;
-					};
-					F0E2A1FE2A9C408600E161B6 = {
-						CreatedOnToolsVersion = 15.0;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -215,20 +158,9 @@
 			projectRoot = "";
 			targets = (
 				1C748C261C21952C0024EED2 /* AMDPlatformPlugin */,
-				F0E2A1FE2A9C408600E161B6 /* CPUChecker */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		F0E2A1FD2A9C408600E161B6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		CE131D6A1FB728990036C3A0 /* Archive */ = {
@@ -253,14 +185,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0A45CBF2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F0E2A1FB2A9C408600E161B6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F0E2A2042A9C408600E161B6 /* CPUChecker.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,128 +539,6 @@
 			};
 			name = Sanitize;
 		};
-		F0E2A2072A9C408600E161B6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CPUChecker/Info.plist;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ChefKiss Inc. All rights reserved.";
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 1.0.0;
-				MODULE_NAME = com.ChefKissInc.CPUChecker;
-				MODULE_VERSION = 1.0.0d1;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ChefKissInc.CPUChecker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUN_CLANG_STATIC_ANALYZER = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				WRAPPER_EXTENSION = kext;
-			};
-			name = Debug;
-		};
-		F0E2A2082A9C408600E161B6 /* Sanitize */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CPUChecker/Info.plist;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ChefKiss Inc. All rights reserved.";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MacKernelSDK/Library/x86_64",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 1.0.0;
-				MODULE_NAME = com.ChefKissInc.CPUChecker;
-				MODULE_VERSION = 1.0.0d1;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ChefKissInc.CPUChecker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUN_CLANG_STATIC_ANALYZER = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				WRAPPER_EXTENSION = kext;
-			};
-			name = Sanitize;
-		};
-		F0E2A2092A9C408600E161B6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.0;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CPUChecker/Info.plist;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 ChefKiss Inc. All rights reserved.";
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 1.0.0;
-				MODULE_NAME = com.ChefKissInc.CPUChecker;
-				MODULE_VERSION = 1.0.0d1;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ChefKissInc.CPUChecker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUN_CLANG_STATIC_ANALYZER = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				WRAPPER_EXTENSION = kext;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -756,16 +558,6 @@
 				1C748C321C21952C0024EED2 /* Debug */,
 				CE9901CB21456F6C006E5CF5 /* Sanitize */,
 				1C748C331C21952C0024EED2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F0E2A2062A9C408600E161B6 /* Build configuration list for PBXNativeTarget "CPUChecker" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F0E2A2072A9C408600E161B6 /* Debug */,
-				F0E2A2082A9C408600E161B6 /* Sanitize */,
-				F0E2A2092A9C408600E161B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -21,4 +21,15 @@ enum {
 	kIOPPFSleepFactorLastSleepDeepIdle,
 };
 
-class IOPlatformPluginFamilyPriv : public IOPlatformPluginFamily {};
+class IOPlatformPluginFamilyPriv : public IOPlatformPluginFamily {
+	OSDeclareDefaultStructors(IOPlatformPluginFamilyPriv);
+	
+	virtual bool start(IOService *provider) APPLE_KEXT_OVERRIDE;
+	virtual void stop(IOService *provider) APPLE_KEXT_OVERRIDE;
+	IOReturn initSymvols();
+	IOReturn setProperties(OSObject *object) APPLE_KEXT_OVERRIDE;
+	void releaseSymbols();
+	IOReturn pluginGetDiagProperty(OSSymbol *sym, OSSymbol *something);
+	IOReturn pluginSetDiagProperty(OSSymbol *sym, OSSymbol *something, OSObject *plugin);
+	void pluginRemoveDiagProperty(OSSymbol *sym, OSSymbol *something);
+};

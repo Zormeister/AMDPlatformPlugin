@@ -5,9 +5,11 @@
 #include <IOKit/IOService.h>
 
 class IOPlatformPluginFamily : public IOService {
+	OSDeclareDefaultStructors(IOPlatformPluginFamily);
+	
 	virtual IOReturn setProperties(OSObject *object) APPLE_KEXT_OVERRIDE;
-	virtual IOReturn platformASPMEnable(IOService *service);
-	virtual IOReturn platformMaxBusDelay(IOService *service, int delay);
+	IOReturn platformASPMEnable(IOService *service);
+	IOReturn platformMaxBusDelay(IOService *service, int delay);
 	
 	OSMetaClassDeclareReservedUnused(IOPlatformPluginFamily, 0);
 	OSMetaClassDeclareReservedUnused(IOPlatformPluginFamily, 1);
