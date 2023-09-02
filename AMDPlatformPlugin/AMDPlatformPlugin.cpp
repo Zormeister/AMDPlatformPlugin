@@ -34,6 +34,7 @@ void AMDPlatformPlugin::log(uint32_t logLevel, const char *fmt, ...) {
 
 bool AMDPlatformPlugin::start(IOService *provider) {
     IOPlatformPluginFamilyPriv::start(provider);
+	callback = this;
     const char *vendor[16];
     uint32_t reg[4];
     do_cpuid(0, reg);
@@ -74,18 +75,18 @@ bool AMDPlatformPlugin::setPlatform() {
                     if (cpuBModel == 0x1) {
                         if (pkgType == 7) {
                             this->currentPlatform = HEDT;
-                            this->hedtPlatform = Whitehaven;
+                            this->hedtPlatform = kHEDTPlatformWhitehaven;
                         } else {
                             this->currentPlatform = Desktop;
-                            this->desktopPlatform = SummitRidge;
+                            this->desktopPlatform = kDesktopPlatformSummitRidge;
                         }
                     } else if (cpuBModel == 0x8) {
                         if (pkgType == 7) {
                             this->currentPlatform = HEDT;
-                            this->hedtPlatform = Colfax;
+                            this->hedtPlatform = kHEDTPlatformColfax;
                         } else {
                             this->currentPlatform = Desktop;
-                            this->desktopPlatform = PinnacleRidge;
+                            this->desktopPlatform = kDesktopPlatformPinnacleRidge;
                         }
                     }
                     break;
@@ -93,12 +94,12 @@ bool AMDPlatformPlugin::setPlatform() {
                 case 0x1: {
 					this->currentPlatform = APU;
                     if (cpuBModel == 0x1) {
-                        this->apuPlatform = Raven;
+                        this->apuPlatform = kAPUPlatformRaven;
                     } else if (cpuBModel == 0x8) {
                         if (pkgType == 2) {
-                            this->apuPlatform = Raven2;
+                            this->apuPlatform = kAPUPlatformRaven2;
                         } else {
-                            this->apuPlatform = Picasso;
+                            this->apuPlatform = kAPUPlatformPicasso;
                         }
                     }
                     break;
@@ -106,44 +107,44 @@ bool AMDPlatformPlugin::setPlatform() {
                 case 0x2: {
                     if (cpuBModel == 0) {
                         this->currentPlatform = APU;
-                        this->apuPlatform = Dali;
+                        this->apuPlatform = kAPUPlatformDali;
                     }
 					break;
                 }
                 case 0x3: {
                     if (cpuBModel == 0x1) {
                         this->currentPlatform = HEDT;
-                        this->hedtPlatform = CastlePeak;
+                        this->hedtPlatform = kHEDTPlatformCastlePeak;
                     }
 					break;
                 }
                 case 0x6: {
 					this->currentPlatform = APU;
                     if (cpuBModel == 0x0) {
-                        this->apuPlatform = Renoir;
+                        this->apuPlatform = kAPUPlatformRenoir;
                     } else if (cpuBModel == 0x8) {
-                        this->apuPlatform = Lucienne;
+                        this->apuPlatform = kAPUPlatformLucienne;
                     }
 					break;
                 }
                 case 0x7: {
                     if (cpuBModel == 0x1) {
                         this->currentPlatform = Desktop;
-                        this->desktopPlatform = Matisse;
+                        this->desktopPlatform = kDesktopPlatformMatisse;
                     }
 					break;
                 }
                 case 0x9: {
                     if (cpuBModel == 0x0) {
                         this->currentPlatform = APU;
-                        this->apuPlatform = VanGogh;
+                        this->apuPlatform = kAPUPlatformVanGogh;
                     }
 					break;
                 }
                 case 0xA: {
                     if (cpuBModel == 0x0) {
                         this->currentPlatform = APU;
-                        this->apuPlatform = Mendocino;
+                        this->apuPlatform = kAPUPlatformMendocino;
                     }
 					break;
                 }
@@ -155,21 +156,21 @@ bool AMDPlatformPlugin::setPlatform() {
                 case 0x2: {
                     if (cpuBModel == 0x0 || cpuBModel == 0x1) {
                         this->currentPlatform = Desktop;
-                        this->desktopPlatform = Vermeer;
+                        this->desktopPlatform = kDesktopPlatformVermeer;
                     }
 					break;
                 }
                 case 0x4: {
                     if (cpuBModel == 0) {
                         this->currentPlatform = APU;
-                        this->apuPlatform = Rembrandt;
+                        this->apuPlatform = kAPUPlatformRembrandt;
                         break;
                     }
                 }
                 case 0x5: {
                     if (cpuBModel == 0) {
                         this->currentPlatform = APU;
-                        this->apuPlatform = Cezanne;
+                        this->apuPlatform = kAPUPlatformCezanne;
                     }
 					break;
                 }

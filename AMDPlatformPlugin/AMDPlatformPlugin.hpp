@@ -2,36 +2,37 @@
 //  details.
 
 #pragma once
+#include "AMDPlatformPluginSMUServices.hpp"
 #include "../IOPlatformPluginFamily/IOPlatformPluginFamilyPriv.hpp"    // will change on final release
 #include <IOKit/IOService.h>
 #include <IOKit/acpi/IOACPIPlatformDevice.h>
 
 enum AMDEPPMode : uint32_t {
-    Performance = 0,
-    BalancePerformance,
-    BalancePowerSavings,
-    PowerSavings,
+    kEPPModePerformance = 0,
+    kEPPModeBalancePerformance,
+    kEPPModeBalancePowerSavings,
+    kEPPModePowerSavings,
 };
 // Ryzen Mobile/Desktop, APUs in general.
 enum AMDAPUPlatforms : uint32_t {
-    NotAPUPlatform = 0,
-    Raven,
-    Raven2,
-    Picasso,
-    Dali,
-    Renoir,
-    Lucienne,
-    Cezanne,
-    VanGogh,      // here for reference
-    Rembrandt,    // here for reference
-    Mendocino,
-    Phoenix,    // here for reference
+    kNotAPUPlatform = 0,
+    kAPUPlatformRaven,
+    kAPUPlatformRaven2,
+    kAPUPlatformPicasso,
+    kAPUPlatformDali,
+    kAPUPlatformRenoir,
+    kAPUPlatformLucienne,
+    kAPUPlatformCezanne,
+    kAPUPlatformVanGogh,      // here for reference
+    kAPUPlatformRembrandt,    // here for reference
+    kAPUPlatformMendocino,
+    kAPUPlatformPhoenix,    // here for reference
 };
 
 constexpr const char *AMDAPUPlatforms2String(AMDAPUPlatforms apuplat) {
 	switch (apuplat) {
 		case 0:
-			return "NotAPUPlatform";
+			return "Not an APU platform";
 		case 1:
 			return "Raven";
 		case 2:
@@ -60,17 +61,17 @@ constexpr const char *AMDAPUPlatforms2String(AMDAPUPlatforms apuplat) {
 // Ryzen Desktop
 enum AMDDesktopPlatforms : uint32_t {
     NotDesktopPlatform = 0,
-    SummitRidge,
-    PinnacleRidge,
-    Matisse,
-    Vermeer,
-    Raphael,
+    kDesktopPlatformSummitRidge,
+    kDesktopPlatformPinnacleRidge,
+    kDesktopPlatformMatisse,
+    kDesktopPlatformVermeer,
+    kDesktopPlatformRaphael,
 };
 
 constexpr const char *AMDDesktopPlatforms2String(AMDDesktopPlatforms deskplat) {
 	switch (deskplat) {
 		case 0:
-			return "NotDesktopPlatform";
+			return "Not a desktop platform";
 		case 1:
 			return "SummitRidge";
 		case 2:
@@ -86,17 +87,17 @@ constexpr const char *AMDDesktopPlatforms2String(AMDDesktopPlatforms deskplat) {
 
 // Threadripper
 enum AMDHEDTPlatforms : uint32_t {
-    NotHEDTPlatform = 0,
-    Whitehaven,
-    Colfax,
-    CastlePeak,
-    Chagall,
+    kNotHEDTPlatform = 0,
+    kHEDTPlatformWhitehaven,
+    kHEDTPlatformColfax,
+    kHEDTPlatformCastlePeak,
+    kHEDTPlatformChagall,
 };
 
 constexpr const char *AMDHEDTPlatforms2String(AMDHEDTPlatforms hedtplat) {
 	switch (hedtplat) {
 		case 0:
-			return "NotHEDTPlatform";
+			return "Not a HEDT platform";
 		case 1:
 			return "Whitehaven";
 		case 2:
@@ -147,6 +148,7 @@ class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
     AMDDesktopPlatforms desktopPlatform;
     AMDCurrentPlatform currentPlatform;
 
+	static AMDPlatformPlugin *callback;
     private:
     SystemType sysType;
 };

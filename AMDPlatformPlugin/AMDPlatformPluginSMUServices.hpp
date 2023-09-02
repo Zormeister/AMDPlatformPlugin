@@ -3,6 +3,7 @@
 
 #pragma once
 #include "AMDPlatformPlugin.hpp"
+#include "AMDPMTableHandler.hpp"
 #include <IOKit/pci/IOPCIDevice.h>
 
 enum SMUReturn : uint32_t {
@@ -41,6 +42,7 @@ struct SMU {
 	uint32_t addrMbCmd;
 	uint32_t addrMbRsp;
 	uint32_t addrMbArgs;
+	uint64_t dramBaseAddr;
 };
 
 struct SMUCmd {
@@ -61,13 +63,14 @@ class AMDPlatformPluginSMUServices : public IOService {
     SMUReturn setupSmuServices(SMU *smu);
 	void dumpServicesState();
 
-	AMDPlatformPlugin *amdpp;
 	SMUCmd lastProcessedCmd;
+	static AMDPMTableHandler *pmTbl;
 	public:
+	static AMDPlatformPluginSMUServices *callback;
 	SMU smu;
 	bool SmuServicesHaveStarted = false;
 	void nullAllArgs(SMUCmd *cmd);
 	SMUReturn sendCmdToSmu(SMU *smu, SMUCmd *cmd);
 	UInt32 getSmuVersion(SMU *smu);
-	SMUReturn getSmuDramBaseAddr(SMU *smu);
+	uint64_t getSmuDramBaseAddr(SMU *smu);
 };

@@ -13,10 +13,10 @@
 		F024117E2AA14928005F9C8F /* AMDPlatformPlugin.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F0A45CBE2A99E60C00FD0C00 /* AMDPlatformPlugin.hpp */; };
 		F03490712AA1969F00047727 /* AMDPlatformPluginSMUServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F034906F2AA1969F00047727 /* AMDPlatformPluginSMUServices.cpp */; };
 		F03490722AA1969F00047727 /* AMDPlatformPluginSMUServices.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F03490702AA1969F00047727 /* AMDPlatformPluginSMUServices.hpp */; };
-		F044B0642AA28B2900C34901 /* AMDPMTableHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F044B0622AA28B2900C34901 /* AMDPMTableHandler.cpp */; };
-		F044B0652AA28B2900C34901 /* AMDPMTableHandler.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F044B0632AA28B2900C34901 /* AMDPMTableHandler.hpp */; };
 		F044B06D2AA32CBA00C34901 /* AMDPlatformPluginSMUServicesNoIOPP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F044B06A2AA31BFA00C34901 /* AMDPlatformPluginSMUServicesNoIOPP.cpp */; };
 		F044B06E2AA32CC000C34901 /* AMDPlatformPluginNoIOPP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F02411882AA149C0005F9C8F /* AMDPlatformPluginNoIOPP.cpp */; };
+		F05350B92AA3560A00B864BA /* AMDPMTableHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F05350B72AA3560A00B864BA /* AMDPMTableHandler.cpp */; };
+		F05350BA2AA3560A00B864BA /* AMDPMTableHandler.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F05350B82AA3560A00B864BA /* AMDPMTableHandler.hpp */; };
 		F0A45CBF2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0A45CBD2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp */; };
 		F0A45CC02A99E60C00FD0C00 /* AMDPlatformPlugin.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F0A45CBE2A99E60C00FD0C00 /* AMDPlatformPlugin.hpp */; };
 /* End PBXBuildFile section */
@@ -56,11 +56,11 @@
 		F024118A2AA149C0005F9C8F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F034906F2AA1969F00047727 /* AMDPlatformPluginSMUServices.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPlatformPluginSMUServices.cpp; sourceTree = "<group>"; };
 		F03490702AA1969F00047727 /* AMDPlatformPluginSMUServices.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPlatformPluginSMUServices.hpp; sourceTree = "<group>"; };
-		F044B0622AA28B2900C34901 /* AMDPMTableHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPMTableHandler.cpp; sourceTree = "<group>"; };
-		F044B0632AA28B2900C34901 /* AMDPMTableHandler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPMTableHandler.hpp; sourceTree = "<group>"; };
 		F044B0692AA31BFA00C34901 /* AMDPlatformPluginSMUServicesNoIOPP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AMDPlatformPluginSMUServicesNoIOPP.hpp; sourceTree = "<group>"; };
 		F044B06A2AA31BFA00C34901 /* AMDPlatformPluginSMUServicesNoIOPP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPlatformPluginSMUServicesNoIOPP.cpp; sourceTree = "<group>"; };
 		F04BC4B42A9B765B0000761E /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = usr/lib/libkmod.a; sourceTree = SDKROOT; };
+		F05350B72AA3560A00B864BA /* AMDPMTableHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPMTableHandler.cpp; sourceTree = "<group>"; };
+		F05350B82AA3560A00B864BA /* AMDPMTableHandler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPMTableHandler.hpp; sourceTree = "<group>"; };
 		F0A45CBD2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPlatformPlugin.cpp; sourceTree = "<group>"; };
 		F0A45CBE2A99E60C00FD0C00 /* AMDPlatformPlugin.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPlatformPlugin.hpp; sourceTree = "<group>"; };
 		F0E2A20A2A9C596B00E161B6 /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
@@ -115,8 +115,8 @@
 				F0A45CBE2A99E60C00FD0C00 /* AMDPlatformPlugin.hpp */,
 				F034906F2AA1969F00047727 /* AMDPlatformPluginSMUServices.cpp */,
 				F03490702AA1969F00047727 /* AMDPlatformPluginSMUServices.hpp */,
-				F044B0622AA28B2900C34901 /* AMDPMTableHandler.cpp */,
-				F044B0632AA28B2900C34901 /* AMDPMTableHandler.hpp */,
+				F05350B72AA3560A00B864BA /* AMDPMTableHandler.cpp */,
+				F05350B82AA3560A00B864BA /* AMDPMTableHandler.hpp */,
 			);
 			path = AMDPlatformPlugin;
 			sourceTree = "<group>";
@@ -160,8 +160,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F03490722AA1969F00047727 /* AMDPlatformPluginSMUServices.hpp in Headers */,
+				F05350BA2AA3560A00B864BA /* AMDPMTableHandler.hpp in Headers */,
 				F0A45CC02A99E60C00FD0C00 /* AMDPlatformPlugin.hpp in Headers */,
-				F044B0652AA28B2900C34901 /* AMDPMTableHandler.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,8 +284,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F03490712AA1969F00047727 /* AMDPlatformPluginSMUServices.cpp in Sources */,
+				F05350B92AA3560A00B864BA /* AMDPMTableHandler.cpp in Sources */,
 				F0A45CBF2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp in Sources */,
-				F044B0642AA28B2900C34901 /* AMDPMTableHandler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
