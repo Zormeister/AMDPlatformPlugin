@@ -2,7 +2,6 @@
 //  details.
 
 #pragma once
-#include "../IOPlatformPluginFamily/IOPlatformPluginFamilyPriv.hpp"    // will change on final release
 #include <IOKit/IOService.h>
 #include <IOKit/acpi/IOACPIPlatformDevice.h>
 
@@ -134,8 +133,8 @@ enum SystemType : uint32_t {
     MobileSystem,     // 02, found on MBP SMBIOSes
 };
 
-class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
-	OSDeclareDefaultStructors(AMDPlatformPlugin);
+class AMDPlatformPluginNoIOPP : public IOService {
+	OSDeclareDefaultStructors(AMDPlatformPluginNoIOPP);
     virtual bool start(IOService *provider) APPLE_KEXT_OVERRIDE;
 
     public:

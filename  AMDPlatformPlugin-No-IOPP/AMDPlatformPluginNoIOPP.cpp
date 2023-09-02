@@ -1,18 +1,18 @@
-//  Copyright © 2023 ChefKiss Inc. Licensed under the Thou Shalt Not Profit License version 1.5. See LICENSE for
+//  Copyright © 2022-2023 ChefKiss Inc. Licensed under the Thou Shalt Not Profit License version 1.5. See LICENSE for
 //  details.
 
-#include "AMDPlatformPlugin.hpp"
-#include "AMDPlatformPluginSMUServices.hpp"
-#include <IOKit/IOService.h>
+#include "AMDPlatformPluginNoIOPP.hpp"
+#include "AMDPlatformPluginSMUServicesNoIOPP.hpp"
 #include <i386/cpuid.h>
 #include <i386/pmCPU.h>
 #include <i386/proc_reg.h>
+#include <IOKit/IOService.h>
 
-OSDefineMetaClassAndStructors(AMDPlatformPlugin, IOPlatformPluginFamilyPriv);
+OSDefineMetaClassAndStructors(AMDPlatformPluginNoIOPP, IOService);
 
 constexpr static const char *LogLevel[] = {"Info", "Warning", "ERROR", "ERROR UNRECOVERABLE"};
 
-void AMDPlatformPlugin::log(uint32_t logLevel, const char *fmt, ...) {
+void AMDPlatformPluginNoIOPP::log(uint32_t logLevel, const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
     auto *ns = new char[0x10000];
@@ -32,8 +32,8 @@ void AMDPlatformPlugin::log(uint32_t logLevel, const char *fmt, ...) {
     delete[] ns;
 }
 
-bool AMDPlatformPlugin::start(IOService *provider) {
-    IOPlatformPluginFamilyPriv::start(provider);
+bool AMDPlatformPluginNoIOPP::start(IOService *provider) {
+    IOService::start(provider);
     const char *vendor[16];
     uint32_t reg[4];
     do_cpuid(0, reg);
@@ -45,7 +45,7 @@ bool AMDPlatformPlugin::start(IOService *provider) {
     return true;
 }
 
-bool AMDPlatformPlugin::waitForSmuServicesRunning() {
+bool AMDPlatformPluginNoIOPP::waitForSmuServicesRunning() {
     OSDictionary *SmuServ;
 	AMDPlatformPluginSMUServices *SmuServices;
     do {
@@ -59,7 +59,7 @@ bool AMDPlatformPlugin::waitForSmuServicesRunning() {
 #define bitmask32(h, l)     ((bit32(h) | (bit32(h) - 1)) & ~(bit32(l) - 1))
 #define bitfield32(x, h, l) ((((x)&bitmask32(h, l)) >> l))
 
-bool AMDPlatformPlugin::setPlatform() {
+bool AMDPlatformPluginNoIOPP::setPlatform() {
     uint32_t reg[4];
     do_cpuid(1, reg);
     uint32_t cpuFamily = bitfield32(reg[eax], 11, 8) + bitfield32(reg[eax], 27, 20);
