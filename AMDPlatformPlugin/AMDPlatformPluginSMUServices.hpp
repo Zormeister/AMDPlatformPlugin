@@ -26,22 +26,41 @@ constexpr const char *SMUReturn2String(SMUReturn smuret) {
 	return "SMUReturnUnknownReturn";
 }
 
-enum InterfaceVersion : uint32_t {
-	V9 = 9,
-	V10,
-	V11,
-	V12,
-	V13,
+enum SMUMailboxType : uint32_t {
+	kSMUMBTypeRSMU = 0,
+	kSMUMBTypeMP1,
+};
+
+constexpr const char *SMUMBType2String(SMUMailboxType mbType) {
+	switch (mbType) {
+		case kSMUMBTypeRSMU: return "RSMU";
+		case kSMUMBTypeMP1: return "MP1";
+	}
+}
+
+enum MP1InterfaceVersion : uint32_t {
+	kMP1InterfaceVNotMP1Mailbox = 0,
+	kMP1InterfaceV9 = 9,
+	kMP1InterfaceV10,
+	kMP1InterfaceV11,
+	kMP1InterfaceV12,
+	kMP1InterfaceV13,
+};
+
+struct SMUInterface {
+	MP1InterfaceVersion ifver;
+	SMUMailboxType mbType;
+	uint32_t addrMbCmd;
+	uint32_t addrMbRsp;
+	uint32_t addrMbArgs;
 };
 
 struct SMU {
     IOPCIDevice *smu;
-	InterfaceVersion ifver;
+	SMUInterface smuIf;
+	SMUMailboxType mbType;
 	UInt32 smuVer;
 	SMUReturn lastReturned;
-	uint32_t addrMbCmd;
-	uint32_t addrMbRsp;
-	uint32_t addrMbArgs;
 	uint64_t dramBaseAddr;
 };
 
@@ -49,6 +68,7 @@ struct SMUCmd {
 	uint32_t args[6];
 	uint32_t msg;
 	uint32_t rsp;
+	bool sendToRSMU = false;
 };
 
 class AMDPlatformPluginSMUServices : public IOService {
@@ -60,6 +80,7 @@ class AMDPlatformPluginSMUServices : public IOService {
     UInt32 readFromSmu(SMU *smu, uint32_t addr);
 	SMUReturn writeToSmu(SMU *smu, uint32_t addr, uint32_t val);
 	SMUReturn getAddrForMB(SMU *smu);
+	SMUReturn getAddrForRsmuMB(SMU *smu);
     SMUReturn setupSmuServices(SMU *smu);
 	void dumpServicesState();
 

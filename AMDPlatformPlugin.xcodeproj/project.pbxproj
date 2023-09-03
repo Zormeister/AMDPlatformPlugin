@@ -10,7 +10,6 @@
 		CE8DA0832517C41A008C44E8 /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8DA0822517C41A008C44E8 /* libkmod.a */; };
 		F024117A2AA14928005F9C8F /* AMDPlatformPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0A45CBD2A99E60C00FD0C00 /* AMDPlatformPlugin.cpp */; };
 		F024117C2AA14928005F9C8F /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8DA0822517C41A008C44E8 /* libkmod.a */; };
-		F024117E2AA14928005F9C8F /* AMDPlatformPlugin.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F0A45CBE2A99E60C00FD0C00 /* AMDPlatformPlugin.hpp */; };
 		F03490712AA1969F00047727 /* AMDPlatformPluginSMUServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F034906F2AA1969F00047727 /* AMDPlatformPluginSMUServices.cpp */; };
 		F03490722AA1969F00047727 /* AMDPlatformPluginSMUServices.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F03490702AA1969F00047727 /* AMDPlatformPluginSMUServices.hpp */; };
 		F044B06D2AA32CBA00C34901 /* AMDPlatformPluginSMUServicesNoIOPP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F044B06A2AA31BFA00C34901 /* AMDPlatformPluginSMUServicesNoIOPP.cpp */; };
@@ -169,7 +168,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F024117E2AA14928005F9C8F /* AMDPlatformPlugin.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
