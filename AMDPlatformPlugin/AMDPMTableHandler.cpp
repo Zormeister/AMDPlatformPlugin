@@ -11,11 +11,11 @@ bool AMDPMTableHandler::init() {
 }
 
 AMDPMTableHandler *AMDPMTableHandler::createPMTableHandler() {
-    auto PM = AMDPMTableHandler::operator new(sizeof(AMDPMTableHandler));
-    auto pmTbl = (AMDPMTableHandler *)PM;
-    if (pmTbl == nullptr) { return nullptr; }
-    if (!pmTbl->init()) { pmTbl->release(); }
-    return (AMDPMTableHandler *)PM;
+	auto *pm = new AMDPMTableHandler{};
+    if (!pm) { return nullptr; }
+    if (!pm->init()) { return pm; }
+	pm->release();
+    return nullptr;
 }
 
 uint32_t AMDPMTableHandler::getPmTableVersion() {
