@@ -15,8 +15,8 @@ struct PMTable {
     uint32_t *dramMapPtr2;
 };
 
-class AMDPMTableHandler : public OSObject {
-    OSDeclareDefaultStructors(AMDPMTableHandler);
+class AMDPMTableServices : public OSObject {
+    OSDeclareDefaultStructors(AMDPMTableServices);
 
     public:
     bool init() APPLE_KEXT_OVERRIDE;
@@ -25,9 +25,9 @@ class AMDPMTableHandler : public OSObject {
     uint32_t sendPmTableToDram();
     uint32_t getPmTableSize();
     uint32_t setupPmTableServices();
-    static AMDPMTableHandler *createPMTableHandler();
+    static AMDPMTableServices *createPMTableServices();
 
-    static AMDPMTableHandler *callback;
+    static AMDPMTableServices *callback;
     uint64_t dramBaseAddr;
     uint64_t dramBaseAddr2;
     PMTable pmTbl;

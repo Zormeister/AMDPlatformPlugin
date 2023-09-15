@@ -1,24 +1,25 @@
 //  Copyright © 2023 ChefKiss Inc. Licensed under the Thou Shalt Not Profit License version 1.5. See LICENSE for
 //  details.
 
-#include "AMDPMTableHandler.hpp"
+#include "AMDPMTableServices.hpp"
+#include "AMDPlatformPlugin.hpp"
 #include "AMDPlatformPluginSMUServices.hpp"
 #include <IOKit/IOTypes.h>
 
-bool AMDPMTableHandler::init() {
+bool AMDPMTableServices::init() {
     callback = this;
     return true;
 }
 
-AMDPMTableHandler *AMDPMTableHandler::createPMTableHandler() {
-	auto *pm = new AMDPMTableHandler{};
+AMDPMTableServices *AMDPMTableServices::createPMTableServices() {
+	auto *pm = new AMDPMTableServices{};
     if (!pm) { return nullptr; }
     if (!pm->init()) { return pm; }
 	pm->release();
-    return nullptr;
+	return nullptr;
 }
 
-uint32_t AMDPMTableHandler::getPmTableVersion() {
+uint32_t AMDPMTableServices::getPmTableVersion() {
     SMUCmd cmd;
     switch (AMDPlatformPlugin::callback->apuPlatform) {
         case kAPUPlatformRaven:
@@ -51,7 +52,7 @@ uint32_t AMDPMTableHandler::getPmTableVersion() {
     return cmd.args[0];
 }
 
-uint32_t AMDPMTableHandler::sendPmTableToDram() {
+uint32_t AMDPMTableServices::sendPmTableToDram() {
     SMUCmd cmd;
     cmd.msg = 0;
     AMDPlatformPluginSMUServices::callback->nullAllArgs(&cmd);
@@ -91,7 +92,7 @@ uint32_t AMDPMTableHandler::sendPmTableToDram() {
     return AMDPlatformPluginSMUServices::callback->sendCmdToSmu(&AMDPlatformPluginSMUServices::callback->smu, &cmd);
 }
 
-uint32_t AMDPMTableHandler::getPmTableSize() {
+uint32_t AMDPMTableServices::getPmTableSize() {
     switch (AMDPlatformPlugin::callback->apuPlatform) {
         case kAPUPlatformRaven:
         case kAPUPlatformRaven2:
@@ -185,7 +186,7 @@ uint32_t AMDPMTableHandler::getPmTableSize() {
     return 0;
 }
 
-uint32_t AMDPMTableHandler::setupPmTableServices() {
+uint32_t AMDPMTableServices::setupPmTableServices() {
     uint64_t dramBaseAddr =
         AMDPlatformPluginSMUServices::callback->getSmuDramBaseAddr(&AMDPlatformPluginSMUServices::callback->smu);
     if (dramBaseAddr == 0xFF) {

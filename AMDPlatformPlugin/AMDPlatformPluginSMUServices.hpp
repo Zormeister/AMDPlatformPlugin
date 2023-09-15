@@ -2,8 +2,7 @@
 //  details.
 
 #pragma once
-#include "AMDPMTableHandler.hpp"
-#include "AMDPlatformPlugin.hpp"
+#include "AMDPMTableServices.hpp"
 #include <IOKit/pci/IOPCIDevice.h>
 
 enum SMUReturn : uint32_t {
@@ -87,7 +86,7 @@ class AMDPlatformPluginSMUServices : public IOService {
     void dumpServicesState();
 
     SMUCmd lastProcessedCmd;
-    static AMDPMTableHandler *pmTbl;
+    static AMDPMTableServices *pmTbl;
 
     public:
     static AMDPlatformPluginSMUServices *callback;

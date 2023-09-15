@@ -188,13 +188,6 @@ bool AMDPlatformPlugin::setPlatform() {
                     }
                     break;
                 }
-				case 0x8: {
-                    if (cpuBModel == 0) {
-                        this->currentPlatform = kAMDPlatformAPU;
-                        this->apuPlatform = kAPUPlatformBarcelo;
-                    }
-                    break;
-                }
             }
             break;
         }

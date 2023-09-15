@@ -4,8 +4,37 @@
 #pragma once
 #include "../IOPlatformPluginFamily/IOPlatformPluginFamilyPriv.hpp"    // will change on final release
 #include "AMDPlatformPluginSMUServices.hpp"
+#include "AMDPlatformPluginTemperatureServices.hpp"
+#include "AMDPMTableServices.hpp"
 #include <IOKit/IOService.h>
 #include <IOKit/acpi/IOACPIPlatformDevice.h>
+
+enum CPPCVersions : UInt32 {
+	kCPPCVersion2 = 2,
+	kCPPCVersion3,
+};
+
+struct CPCReg {
+	UInt8 desc;
+	UInt16 length;
+	UInt8 spaceId;
+	UInt8 bitWidth;
+	UInt8 bitOff;
+	UInt8 accessWidth;
+	UInt64 addr;
+} PACKED;
+
+struct CPPCPerformanceCaps {
+	UInt32 energyPerf;
+	UInt32 guaranteedPerf;
+	UInt32 highestPerf;
+	UInt32 lowestFreq;
+	UInt32 lowestNonlinearPerf;
+	UInt32 lowestPerf;
+	UInt32 nominalFreq;
+	UInt32 nominalPerf;
+	bool autoSelEnable;
+};
 
 enum AMDEPPMode : uint32_t {
     kEPPModeDefault = 0,
@@ -53,7 +82,6 @@ enum AMDAPUPlatforms : uint32_t {
     kAPUPlatformLucienne,
     kAPUPlatformCezanne,
     kAPUPlatformVanGogh,      // here for reference
-	kAPUPlatformBarcelo,
     kAPUPlatformRembrandt,    // here for reference
     kAPUPlatformMendocino,
     kAPUPlatformPhoenix,    // here for reference
@@ -79,13 +107,11 @@ constexpr const char *AMDAPUPlatforms2String(AMDAPUPlatforms apuplat) {
             return "Cezanne";
         case 8:
             return "Van Gogh";
-		case 9:
-			return "Barcelo";
-        case 10:
+        case 9:
             return "Rembrandt";
-        case 11:
+        case 10:
             return "Mendocino";
-        case 12:
+        case 11:
             return "Phoenix";
     }
 }
@@ -213,6 +239,11 @@ enum SystemType : uint32_t {
     MobileSystem,     // 02, found on MBP SMBIOSes
 };
 
+struct AMDPlatformPluginServices {
+	AMDPlatformPluginTemperatureServices *tempServices;
+	AMDPMTableServices *pmTblServices;
+};
+
 class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
     OSDeclareDefaultStructors(AMDPlatformPlugin);
     virtual bool start(IOService *provider) APPLE_KEXT_OVERRIDE;
@@ -233,4 +264,5 @@ class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
 
     private:
     SystemType sysType;
+	bool hasCPPC = false;
 };

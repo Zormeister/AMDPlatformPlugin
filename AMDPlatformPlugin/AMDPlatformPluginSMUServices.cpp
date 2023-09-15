@@ -1,8 +1,9 @@
 //  Copyright © 2023 ChefKiss Inc. Licensed under the Thou Shalt Not Profit License version 1.5. See LICENSE for
 //  details.
 
+#include "AMDPlatformPlugin.hpp"
 #include "AMDPlatformPluginSMUServices.hpp"
-#include "AMDPMTableHandler.hpp"
+#include "AMDPMTableServices.hpp"
 #include <i386/cpuid.h>
 
 OSDefineMetaClassAndStructors(AMDPlatformPluginSMUServices, IOService);
@@ -228,6 +229,11 @@ uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
     AMDPlatformPlugin::callback->log(0, "%s: grabbing SMU DRAM base address", __PRETTY_FUNCTION__);
     uint32_t ret, part[2], cmds[3];
     SMUCmd cmd;
+
+	cmds[0] = 0;
+	cmds[1] = 0;
+	cmds[2] = 0;
+	
     switch (AMDPlatformPlugin::callback->apuPlatform) {
         case kAPUPlatformRaven:
         case kAPUPlatformRaven2:
@@ -277,7 +283,7 @@ uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
             break;
     }
     cmd.sendToRSMU = true;    // no equiv on MP1? needs investigation.
-    if (cmds[2] != 0) {
+    if (cmds[2]) {
         cmd.args[0] = 3;
         cmd.msg = cmds[0];
         ret = sendCmdToSmu(smu, &cmd);
@@ -311,7 +317,7 @@ uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
         if (ret != SMUReturnOK) { return SMUReturnFailed; }
         part[1] = cmd.args[0];
         return (uint64_t)part[1] << 32 | part[0];
-    } else if (cmds[1] != 0) {
+    } else if (cmds[1]) {
         cmd.msg = cmds[0];
         ret = sendCmdToSmu(smu, &cmd);
         this->lastProcessedCmd = cmd;
@@ -322,7 +328,7 @@ uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
         ret = sendCmdToSmu(smu, &cmd);
         this->lastProcessedCmd = cmd;
         return ret != SMUReturnOK ? ret : cmd.args[0];
-    } else if (cmds[0] != 0) {
+    } else if (cmds[0]) {
         cmd.msg = cmds[0];
         cmd.args[0] = 1;
         cmd.args[1] = 1;
@@ -390,7 +396,7 @@ SMUReturn AMDPlatformPluginSMUServices::setupSmuServices(SMU *smu) {
         (AMDPlatformPlugin::callback->desktopPlatform == kDesktopPlatformMatisse ||
             AMDPlatformPlugin::callback->desktopPlatform == kDesktopPlatformVermeer)) {
         AMDPlatformPlugin::callback->log(0, "%s: activating PM table services", __PRETTY_FUNCTION__);
-        pmTbl = AMDPMTableHandler::createPMTableHandler();
+        pmTbl = AMDPMTableServices::createPMTableServices();
         pmTbl->setupPmTableServices();
     }
     UInt32 smuv = getSmuVersion(smu);
