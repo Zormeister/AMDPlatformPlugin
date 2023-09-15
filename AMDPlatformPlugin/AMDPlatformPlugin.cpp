@@ -2,7 +2,10 @@
 //  details.
 
 #include "AMDPlatformPlugin.hpp"
+#include "AMDPlatformPluginCPUStateServices.hpp"
 #include "AMDPlatformPluginSMUServices.hpp"
+#include "AMDPlatformPluginTemperatureServices.hpp"
+#include "AMDPMTableServices.hpp"
 #include <IOKit/IOService.h>
 #include <i386/cpuid.h>
 #include <i386/pmCPU.h>
@@ -44,11 +47,13 @@ OSData *AMDPlatformPlugin::getBoardID() {
     return 0;
 }
 
-bool AMDPlatformPlugin::setupAmdPlatformPlugin() { return true; }
+bool AMDPlatformPlugin::setupAmdPlatformPlugin() { 
+	this->AMDServices.tempServices = AMDPlatformPluginTemperatureServices::createTemperatureServices();
+	return true;
+}
 
 bool AMDPlatformPlugin::start(IOService *provider) {
     IOPlatformPluginFamilyPriv::start(provider);
-    callback = this;
     const char *vendor[16];
     uint32_t reg[4];
     do_cpuid(0, reg);
@@ -58,6 +63,27 @@ bool AMDPlatformPlugin::start(IOService *provider) {
     log(0, "%s: CPU vendor detected as %s", __PRETTY_FUNCTION__, vendor);
 
     return true;
+}
+
+IOService *AMDPlatformPlugin::probe(IOService *provider, SInt32 *score) {
+	OSDictionary *res = IOService::serviceMatching("AMDPlatformPluginSMUServices");
+	auto iter = getMatchingServices(res);
+	res->release();
+	if (res) {
+		this->AMDServices.smuServices = OSDynamicCast(AMDPlatformPluginSMUServices, iter->getNextObject());
+		iter->release();
+		res = IOService::serviceMatching("AMDPlatformPluginCPUStateServices");
+		if (res) {
+			auto iter = getMatchingServices(res);
+			res->release();
+			this->AMDServices.cpuStateServices = OSDynamicCast(AMDPlatformPluginCPUStateServices, iter->getNextObject());
+			iter->release();
+		}
+		// CPUStateServices is non-essential, so we can skip it in-case something happens
+		return IOService::probe(provider, score);
+	}
+	log(2, "%s: failed probing!", __PRETTY_FUNCTION__);
+	return nullptr;
 }
 
 bool AMDPlatformPlugin::waitForSmuServicesRunning() {

@@ -3,18 +3,20 @@
 
 #pragma once
 #include "../IOPlatformPluginFamily/IOPlatformPluginFamilyPriv.hpp"    // will change on final release
-#include "AMDPlatformPluginSMUServices.hpp"
-#include "AMDPlatformPluginTemperatureServices.hpp"
-#include "AMDPMTableServices.hpp"
 #include <IOKit/IOService.h>
 #include <IOKit/acpi/IOACPIPlatformDevice.h>
+
+class AMDPlatformPluginCPUStateServices;
+class AMDPlatformPluginSMUServices;
+class AMDPlatformPluginTemperatureServices;
+class AMDPMTableServices;
 
 enum CPPCVersions : UInt32 {
 	kCPPCVersion2 = 2,
 	kCPPCVersion3,
 };
 
-struct CPCReg {
+static struct CPCReg {
 	UInt8 desc;
 	UInt16 length;
 	UInt8 spaceId;
@@ -37,11 +39,11 @@ struct CPPCPerformanceCaps {
 };
 
 enum AMDEPPMode : uint32_t {
-    kEPPModeDefault = 0,
-    kEPPModePerformance,
-    kEPPModeBalancePerformance,
-    kEPPModeBalancePowerSavings,
-    kEPPModePowerSavings,
+	kEPPModeDefault = 0,
+	kEPPModePerformance,
+	kEPPModeBalancePerformance,
+	kEPPModeBalancePowerSavings,
+	kEPPModePowerSavings,
 };
 /**
  * `AMDEPPMode Biases`
@@ -57,18 +59,18 @@ enum AMDEPPMode : uint32_t {
  */
 
 constexpr const char *AMDEPPMode2String(AMDEPPMode eppmode) {
-    switch (eppmode) {
-        case kEPPModeDefault:
-            return "Default";
-        case kEPPModePerformance:
-            return "Performance";
-        case kEPPModeBalancePerformance:
-            return "Balanced Performance";
-        case kEPPModeBalancePowerSavings:
-            return "Balanced Power Savings";
-        case kEPPModePowerSavings:
-            return "Power Savings";
-    }
+	switch (eppmode) {
+		case kEPPModeDefault:
+			return "Default";
+		case kEPPModePerformance:
+			return "Performance";
+		case kEPPModeBalancePerformance:
+			return "Balanced Performance";
+		case kEPPModeBalancePowerSavings:
+			return "Balanced Power Savings";
+		case kEPPModePowerSavings:
+			return "Power Savings";
+	}
 }
 
 // Ryzen Mobile/Desktop, APUs in general.
@@ -236,10 +238,13 @@ enum AppleModelType : uint32_t {
 enum SystemType : uint32_t {
     UNKNOWN = 0,
     DesktopSystem,    // 01, observed on Mac Pro
-    MobileSystem,     // 02, found on MBP SMBIOSes
+    MobileSystem,     // 02, found on MBP & MBA SMBIOSes
 };
 
 struct AMDPlatformPluginServices {
+	bool needsCpuStateServices = false; // ACPI0007 devices need it.
+	AMDPlatformPluginCPUStateServices *cpuStateServices;
+	AMDPlatformPluginSMUServices *smuServices;
 	AMDPlatformPluginTemperatureServices *tempServices;
 	AMDPMTableServices *pmTblServices;
 };
@@ -247,6 +252,7 @@ struct AMDPlatformPluginServices {
 class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
     OSDeclareDefaultStructors(AMDPlatformPlugin);
     virtual bool start(IOService *provider) APPLE_KEXT_OVERRIDE;
+	virtual IOService *probe(IOService *provider, SInt32 *score) APPLE_KEXT_OVERRIDE;
 
     public:
     void log(uint32_t logLevel, const char *fmt, ...);
@@ -255,14 +261,14 @@ class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
     bool setEPPModeBias();
     OSData *getBoardID();
     bool setupAmdPlatformPlugin();
+	void dumpAmdPPState();
     AMDAPUPlatforms apuPlatform;
     AMDHEDTPlatforms hedtPlatform;
     AMDDesktopPlatforms desktopPlatform;
     AMDCurrentPlatform currentPlatform;
 
-    static AMDPlatformPlugin *callback;
-
     private:
+	AMDPlatformPluginServices AMDServices;
     SystemType sysType;
 	bool hasCPPC = false;
 };

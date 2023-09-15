@@ -1,14 +1,14 @@
-//
-//  AMDPlatformPluginCPUStateServices.cpp
-//  AMDPlatformPlugin
-//
-//  Created by Zormeister on 15/9/23.
-//  Copyright © 2023 VisualDevelopment. All rights reserved.
-//
+//  Copyright © 2023 ChefKiss Inc. Licensed under the Thou Shalt Not Profit License version 1.5. See LICENSE for
+//  details.
 
 #include "AMDPlatformPluginCPUStateServices.hpp"
 
-bool AMDPlatformPluginCPUStateServices::grabCPPCTable() {
-	cpu->getACPITableData("_CPC");
-	return false;
+OSObject *AMDPlatformPluginCPUStateServices::grabCPPCTable() {
+	OSObject *cpc;
+	if (!cpu->validateObject("_CPC")) {
+		if (!cpu->evaluateObject("_CPC", &cpc, nullptr, 0, 0)) {
+			return cpc;
+		}
+	}
+	return nullptr;
 }

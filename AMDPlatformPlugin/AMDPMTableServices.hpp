@@ -5,6 +5,9 @@
 #include <IOKit/IODeviceMemory.h>
 #include <libkern/c++/OSObject.h>
 
+class AMDPlatformPluginSMUServices;
+class AMDPlatformPlugin;
+
 struct PMTable {
     uint32_t pmTableVersion;
     uint32_t dramMapSize;
@@ -27,8 +30,9 @@ class AMDPMTableServices : public OSObject {
     uint32_t setupPmTableServices();
     static AMDPMTableServices *createPMTableServices();
 
-    static AMDPMTableServices *callback;
     uint64_t dramBaseAddr;
     uint64_t dramBaseAddr2;
     PMTable pmTbl;
+	AMDPlatformPlugin *amdpp;
+	AMDPlatformPluginSMUServices *smuServices;
 };

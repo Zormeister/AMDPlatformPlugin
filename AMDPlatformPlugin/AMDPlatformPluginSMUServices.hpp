@@ -5,6 +5,8 @@
 #include "AMDPMTableServices.hpp"
 #include <IOKit/pci/IOPCIDevice.h>
 
+class AMDPlatformPlugin;
+
 enum SMUReturn : uint32_t {
     SMUReturnOK = 0x01,
     SMUReturnFailed = 0xFF,
@@ -76,7 +78,7 @@ class AMDPlatformPluginSMUServices : public IOService {
     OSDeclareDefaultStructors(AMDPlatformPluginSMUServices);
 
     virtual bool start(IOService *provider) APPLE_KEXT_OVERRIDE;
-    virtual void stop(IOService *provider) APPLE_KEXT_OVERRIDE;
+	virtual IOService *probe(IOService *provider, SInt32 *score) APPLE_KEXT_OVERRIDE;
 
     UInt32 readFromSmu(SMU *smu, uint32_t addr);
     SMUReturn writeToSmu(SMU *smu, uint32_t addr, uint32_t val);
@@ -87,13 +89,14 @@ class AMDPlatformPluginSMUServices : public IOService {
 
     SMUCmd lastProcessedCmd;
     static AMDPMTableServices *pmTbl;
+	AMDPlatformPlugin *amdpp;
 
     public:
-    static AMDPlatformPluginSMUServices *callback;
     SMU smu;
     bool SmuServicesHaveStarted = false;
     void nullAllArgs(SMUCmd *cmd);
     SMUReturn sendCmdToSmu(SMU *smu, SMUCmd *cmd);
     UInt32 getSmuVersion(SMU *smu);
     uint64_t getSmuDramBaseAddr(SMU *smu);
+	AMDPMTableServices *getPMTableServices();
 };

@@ -20,7 +20,7 @@ SMUReturn AMDPlatformPluginSMUServices::writeToSmu(SMU *smu, uint32_t addr, uint
 }
 
 SMUReturn AMDPlatformPluginSMUServices::getAddrForRsmuMB(SMU *smu) {
-    switch (AMDPlatformPlugin::callback->apuPlatform) {
+    switch (amdpp->apuPlatform) {
         case kAPUPlatformRaven:
         case kAPUPlatformRaven2:
         case kAPUPlatformPicasso:
@@ -47,7 +47,7 @@ SMUReturn AMDPlatformPluginSMUServices::getAddrForRsmuMB(SMU *smu) {
         default:
             break;
     }
-    switch (AMDPlatformPlugin::callback->desktopPlatform) {
+    switch (amdpp->desktopPlatform) {
         case kDesktopPlatformSummitRidge:
         case kDesktopPlatformPinnacleRidge:
             smu->smuIf.ifver = kMP1InterfaceVNotMP1Mailbox;
@@ -67,7 +67,7 @@ SMUReturn AMDPlatformPluginSMUServices::getAddrForRsmuMB(SMU *smu) {
         default:
             break;
     }
-    switch (AMDPlatformPlugin::callback->hedtPlatform) {
+    switch (amdpp->hedtPlatform) {
         case kHEDTPlatformWhitehaven:
         case kHEDTPlatformColfax:
             smu->smuIf.ifver = kMP1InterfaceVNotMP1Mailbox;
@@ -87,14 +87,14 @@ SMUReturn AMDPlatformPluginSMUServices::getAddrForRsmuMB(SMU *smu) {
             break;
     }
     if (smu->smuIf.addrMbArgs == 0 || smu->smuIf.addrMbCmd == 0 || smu->smuIf.addrMbRsp == 0) {
-        AMDPlatformPlugin::callback->log(2, "%s: one of our RSMU Addresses are null!", __PRETTY_FUNCTION__);
+        amdpp->log(2, "%s: one of our RSMU Addresses are null!", __PRETTY_FUNCTION__);
         return SMUReturnFailed;
     }
     return SMUReturnOK;
 }
 
 SMUReturn AMDPlatformPluginSMUServices::sendCmdToSmu(SMU *smu, SMUCmd *cmd) {
-    AMDPlatformPlugin::callback->log(0,
+    amdpp->log(0,
         "%s: Sending command to SMU, MSG: %x, Args: 0: %x, 1: %x, 2: %x, 3: %x, 4: %x, 5: %x", __PRETTY_FUNCTION__,
         cmd->msg, cmd->args[0], cmd->args[1], cmd->args[2], cmd->args[3], cmd->args[4], cmd->args[5]);
     uint32_t tmp;
@@ -104,19 +104,19 @@ SMUReturn AMDPlatformPluginSMUServices::sendCmdToSmu(SMU *smu, SMUCmd *cmd) {
     if (cmd->sendToRSMU) {
         auto ret = getAddrForRsmuMB(smu);
         if (ret == SMUReturnFailed) {
-            AMDPlatformPlugin::callback->log(2, "%s: finding address for SMU MB RSMU failed!", __PRETTY_FUNCTION__);
+            amdpp->log(2, "%s: finding address for SMU MB RSMU failed!", __PRETTY_FUNCTION__);
             return ret;
         }
     } else {
         auto ret = getAddrForMB(smu);
         if (ret == SMUReturnFailed) {
-            AMDPlatformPlugin::callback->log(2, "%s: finding address for SMU MB MP1 failed!", __PRETTY_FUNCTION__);
+            amdpp->log(2, "%s: finding address for SMU MB MP1 failed!", __PRETTY_FUNCTION__);
             return ret;
         }
     }
     do { tmp = readFromSmu(&this->smu, smu->smuIf.addrMbRsp); } while (tmp == 0 && retries--);
     if (!tmp && !retries) {
-        AMDPlatformPlugin::callback->log(2, "%s: 	Timed out whilst waiting for the mailbox to be available",
+        amdpp->log(2, "%s: 	Timed out whilst waiting for the mailbox to be available",
             __PRETTY_FUNCTION__);
         return SMUReturnFailed;
     }
@@ -127,16 +127,16 @@ SMUReturn AMDPlatformPluginSMUServices::sendCmdToSmu(SMU *smu, SMUCmd *cmd) {
     do { tmp = readFromSmu(&this->smu, smu->smuIf.addrMbRsp); } while (tmp == 0 && retries--);
     if (tmp != SMUReturnOK && !retries) {
         if (!tmp) {
-            AMDPlatformPlugin::callback->log(2, "%s: 	Timed out whilst waiting for the SMU to respond",
+            amdpp->log(2, "%s: 	Timed out whilst waiting for the SMU to respond",
                 __PRETTY_FUNCTION__);
             return SMUReturnFailed;
         }
-        AMDPlatformPlugin::callback->log(2, "%s: SMU response was not SMUReturnOK! Response: %xh", __PRETTY_FUNCTION__,
+        amdpp->log(2, "%s: SMU response was not SMUReturnOK! Response: %xh", __PRETTY_FUNCTION__,
             tmp);
     }
     for (int i = 0; i < 6; i++) { cmd->args[i] = readFromSmu(smu, smu->smuIf.addrMbArgs + (i * 4)); }
-    AMDPlatformPlugin::callback->log(0, "%s: SMU has responded!", __PRETTY_FUNCTION__);
-    AMDPlatformPlugin::callback->log(0, "%s: SMU response: MSG: Args: 0: %x, 1: %x, 2: %x, 3: %x 4: %x, 5: %x",
+    amdpp->log(0, "%s: SMU has responded!", __PRETTY_FUNCTION__);
+    amdpp->log(0, "%s: SMU response: MSG: Args: 0: %x, 1: %x, 2: %x, 3: %x 4: %x, 5: %x",
         __PRETTY_FUNCTION__, cmd->msg, cmd->args[0], cmd->args[1], cmd->args[2], cmd->args[3], cmd->args[4],
         cmd->args[5]);
     return SMUReturnOK;
@@ -147,7 +147,7 @@ void AMDPlatformPluginSMUServices::nullAllArgs(SMUCmd *cmd) {
 }
 
 SMUReturn AMDPlatformPluginSMUServices::getAddrForMB(SMU *smu) {
-    switch (AMDPlatformPlugin::callback->apuPlatform) {
+    switch (amdpp->apuPlatform) {
         case kAPUPlatformRaven:
         case kAPUPlatformRaven2:
         case kAPUPlatformPicasso:
@@ -179,7 +179,7 @@ SMUReturn AMDPlatformPluginSMUServices::getAddrForMB(SMU *smu) {
         default:
             break;
     }
-    switch (AMDPlatformPlugin::callback->desktopPlatform) {
+    switch (amdpp->desktopPlatform) {
         case kDesktopPlatformSummitRidge:
         case kDesktopPlatformPinnacleRidge:
             smu->smuIf.ifver = kMP1InterfaceV9;
@@ -199,7 +199,7 @@ SMUReturn AMDPlatformPluginSMUServices::getAddrForMB(SMU *smu) {
         default:
             break;
     }
-    switch (AMDPlatformPlugin::callback->hedtPlatform) {
+    switch (amdpp->hedtPlatform) {
         case kHEDTPlatformWhitehaven:
         case kHEDTPlatformColfax:
             smu->smuIf.ifver = kMP1InterfaceV9;
@@ -219,14 +219,14 @@ SMUReturn AMDPlatformPluginSMUServices::getAddrForMB(SMU *smu) {
             break;
     }
     if (smu->smuIf.addrMbArgs == 0 || smu->smuIf.addrMbCmd == 0 || smu->smuIf.addrMbRsp == 0) {
-        AMDPlatformPlugin::callback->log(2, "%s: one of our Addresses are null!", __PRETTY_FUNCTION__);
+        amdpp->log(2, "%s: one of our Addresses are null!", __PRETTY_FUNCTION__);
         return SMUReturnFailed;
     }
     return SMUReturnOK;
 }
 
 uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
-    AMDPlatformPlugin::callback->log(0, "%s: grabbing SMU DRAM base address", __PRETTY_FUNCTION__);
+    amdpp->log(0, "%s: grabbing SMU DRAM base address", __PRETTY_FUNCTION__);
     uint32_t ret, part[2], cmds[3];
     SMUCmd cmd;
 
@@ -234,7 +234,7 @@ uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
 	cmds[1] = 0;
 	cmds[2] = 0;
 	
-    switch (AMDPlatformPlugin::callback->apuPlatform) {
+    switch (amdpp->apuPlatform) {
         case kAPUPlatformRaven:
         case kAPUPlatformRaven2:
         case kAPUPlatformPicasso:
@@ -253,7 +253,7 @@ uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
         default:
             break;
     }
-    switch (AMDPlatformPlugin::callback->desktopPlatform) {
+    switch (amdpp->desktopPlatform) {
         case kDesktopPlatformPinnacleRidge:
             cmds[0] = 0x0B;
             cmds[1] = 0x0C;
@@ -268,7 +268,7 @@ uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
         default:
             break;
     }
-    switch (AMDPlatformPlugin::callback->hedtPlatform) {
+    switch (amdpp->hedtPlatform) {
         case kHEDTPlatformColfax:
             cmds[0] = 0x0B;
             cmds[1] = 0x0C;
@@ -341,7 +341,7 @@ uint64_t AMDPlatformPluginSMUServices::getSmuDramBaseAddr(SMU *smu) {
 }
 
 UInt32 AMDPlatformPluginSMUServices::getSmuVersion(SMU *smu) {
-    AMDPlatformPlugin::callback->log(0, "%s: grabbing SMU version", __PRETTY_FUNCTION__);
+    amdpp->log(0, "%s: grabbing SMU version", __PRETTY_FUNCTION__);
     SMUCmd cmd;
     uint32_t ret;
     cmd.msg = 0x02;
@@ -353,55 +353,51 @@ UInt32 AMDPlatformPluginSMUServices::getSmuVersion(SMU *smu) {
 }
 
 void AMDPlatformPluginSMUServices::dumpServicesState() {
-    AMDPlatformPlugin::callback->log(0, "SmuServices State:");
-    AMDPlatformPlugin::callback->log(0, "  SmuServicesHaveStarted: %d", this->SmuServicesHaveStarted);
-    AMDPlatformPlugin::callback->log(0, "  Last Processed Command:");
-    AMDPlatformPlugin::callback->log(0, "    Arg 0: 0x%x", this->lastProcessedCmd.args[0]);
-    AMDPlatformPlugin::callback->log(0, "    Arg 1: 0x%x", this->lastProcessedCmd.args[1]);
-    AMDPlatformPlugin::callback->log(0, "    Arg 2: 0x%x", this->lastProcessedCmd.args[2]);
-    AMDPlatformPlugin::callback->log(0, "    Arg 3: 0x%x", this->lastProcessedCmd.args[3]);
-    AMDPlatformPlugin::callback->log(0, "    Arg 4: 0x%x", this->lastProcessedCmd.args[4]);
-    AMDPlatformPlugin::callback->log(0, "    Arg 5: 0x%x", this->lastProcessedCmd.args[5]);
-    AMDPlatformPlugin::callback->log(0, "    MSG: 0x%x", this->lastProcessedCmd.msg);
-    AMDPlatformPlugin::callback->log(0, "    Response: 0x%x", this->lastProcessedCmd.rsp);
-    AMDPlatformPlugin::callback->log(0, "  SMU:");
-    AMDPlatformPlugin::callback->log(0, "    Version: 0x%x", this->smu.smuVer);
-    AMDPlatformPlugin::callback->log(0, "    Interface version: v%d", this->smu.smuIf.ifver);
-    AMDPlatformPlugin::callback->log(0, "    Currently in use Mailbox: %s", SMUMBType2String(this->smu.smuIf.mbType));
-    AMDPlatformPlugin::callback->log(0, "    Mailbox Addresses:");
-    AMDPlatformPlugin::callback->log(0, "      Arguments Address: 0x%x", this->smu.smuIf.addrMbArgs);
-    AMDPlatformPlugin::callback->log(0, "      Command Address: 0x%x", this->smu.smuIf.addrMbCmd);
-    AMDPlatformPlugin::callback->log(0, "      Response Address: 0x%x", this->smu.smuIf.addrMbRsp);
-    AMDPlatformPlugin::callback->log(0, "    Last Returned (String): %s", SMUReturn2String(this->smu.lastReturned));
-    AMDPlatformPlugin::callback->log(0, "    Last Returned (Hex): 0x%x", this->smu.lastReturned);
-    AMDPlatformPlugin::callback->log(0, "    DRAM Base Address: 0x%x", this->smu.dramBaseAddr);
-    AMDPlatformPlugin::callback->log(0, "  Platforms:");
-    AMDPlatformPlugin::callback->log(0, "    Current: %s",
-        AMDCurrentPlatform2String(AMDPlatformPlugin::callback->currentPlatform));
-    AMDPlatformPlugin::callback->log(0, "    APU: %s",
-        AMDAPUPlatforms2String(AMDPlatformPlugin::callback->apuPlatform));
-    AMDPlatformPlugin::callback->log(0, "    Desktop: %s",
-        AMDDesktopPlatforms2String(AMDPlatformPlugin::callback->desktopPlatform));
-    AMDPlatformPlugin::callback->log(0, "    HEDT: %s",
-        AMDHEDTPlatforms2String(AMDPlatformPlugin::callback->hedtPlatform));
+    amdpp->log(0, "SmuServices State:");
+    amdpp->log(0, "  SmuServicesHaveStarted: %d", this->SmuServicesHaveStarted);
+    amdpp->log(0, "  Last Processed Command:");
+    amdpp->log(0, "    Arg 0: 0x%x", this->lastProcessedCmd.args[0]);
+    amdpp->log(0, "    Arg 1: 0x%x", this->lastProcessedCmd.args[1]);
+    amdpp->log(0, "    Arg 2: 0x%x", this->lastProcessedCmd.args[2]);
+    amdpp->log(0, "    Arg 3: 0x%x", this->lastProcessedCmd.args[3]);
+    amdpp->log(0, "    Arg 4: 0x%x", this->lastProcessedCmd.args[4]);
+    amdpp->log(0, "    Arg 5: 0x%x", this->lastProcessedCmd.args[5]);
+    amdpp->log(0, "    MSG: 0x%x", this->lastProcessedCmd.msg);
+    amdpp->log(0, "    Response: 0x%x", this->lastProcessedCmd.rsp);
+    amdpp->log(0, "  SMU:");
+    amdpp->log(0, "    Version: 0x%x", this->smu.smuVer);
+    amdpp->log(0, "    Interface version: v%d", this->smu.smuIf.ifver);
+    amdpp->log(0, "    Currently in use Mailbox: %s", SMUMBType2String(this->smu.smuIf.mbType));
+    amdpp->log(0, "    Mailbox Addresses:");
+    amdpp->log(0, "      Arguments Address: 0x%x", this->smu.smuIf.addrMbArgs);
+    amdpp->log(0, "      Command Address: 0x%x", this->smu.smuIf.addrMbCmd);
+    amdpp->log(0, "      Response Address: 0x%x", this->smu.smuIf.addrMbRsp);
+    amdpp->log(0, "    Last Returned (String): %s", SMUReturn2String(this->smu.lastReturned));
+    amdpp->log(0, "    Last Returned (Hex): 0x%x", this->smu.lastReturned);
+    amdpp->log(0, "    DRAM Base Address: 0x%x", this->smu.dramBaseAddr);
+    amdpp->log(0, "  Platforms:");
+    amdpp->log(0, "    Current: %s", AMDCurrentPlatform2String(amdpp->currentPlatform));
+    amdpp->log(0, "    APU: %s", AMDAPUPlatforms2String(amdpp->apuPlatform));
+    amdpp->log(0, "    Desktop: %s", AMDDesktopPlatforms2String(amdpp->desktopPlatform));
+    amdpp->log(0, "    HEDT: %s", AMDHEDTPlatforms2String(amdpp->hedtPlatform));
 }
 
 SMUReturn AMDPlatformPluginSMUServices::setupSmuServices(SMU *smu) {
     SMUReturn ret;
 
-    AMDPlatformPlugin::callback->log(0, "%s: setting up SMU Services", __PRETTY_FUNCTION__);
-    if (!AMDPlatformPlugin::callback->setPlatform()) { return SMUReturnFailed; }
+    amdpp->log(0, "%s: setting up SMU Services", __PRETTY_FUNCTION__);
+    if (!amdpp->setPlatform()) { return SMUReturnFailed; }
     ret = getAddrForMB(smu);
-    if (AMDPlatformPlugin::callback->currentPlatform == kAMDPlatformAPU ||
-        (AMDPlatformPlugin::callback->desktopPlatform == kDesktopPlatformMatisse ||
-            AMDPlatformPlugin::callback->desktopPlatform == kDesktopPlatformVermeer)) {
-        AMDPlatformPlugin::callback->log(0, "%s: activating PM table services", __PRETTY_FUNCTION__);
+    if (amdpp->currentPlatform == kAMDPlatformAPU ||
+        (amdpp->desktopPlatform == kDesktopPlatformMatisse ||
+            amdpp->desktopPlatform == kDesktopPlatformVermeer)) {
+        amdpp->log(0, "%s: activating PM table services", __PRETTY_FUNCTION__);
         pmTbl = AMDPMTableServices::createPMTableServices();
         pmTbl->setupPmTableServices();
     }
     UInt32 smuv = getSmuVersion(smu);
     if (smuv == 0xFF) {
-        AMDPlatformPlugin::callback->log(2, "%s: grabbing SMU version failed!", __PRETTY_FUNCTION__);
+        amdpp->log(2, "%s: grabbing SMU version failed!", __PRETTY_FUNCTION__);
         return SMUReturnFailed;
     } else {
         this->smu.smuVer = smuv;
@@ -411,13 +407,24 @@ SMUReturn AMDPlatformPluginSMUServices::setupSmuServices(SMU *smu) {
 
 bool AMDPlatformPluginSMUServices::start(IOService *provider) {
     IOService::start(provider);
-    callback = this;
+	OSDictionary *res;
+	do {
+		res = IOService::serviceMatching("AMDPlatformPlugin");
+	} while (!res);
+	auto iter = IOService::getMatchingServices(res);
+	this->amdpp = OSDynamicCast(AMDPlatformPlugin, iter->getNextObject());
+	iter->release();
+	
     if (setupSmuServices(&this->smu) == SMUReturnFailed) {
-        AMDPlatformPlugin::callback->log(2, "%s: Failed to setup SMU Services!", __PRETTY_FUNCTION__);
+        amdpp->log(2, "%s: Failed to setup SMU Services!", __PRETTY_FUNCTION__);
         dumpServicesState();
         return false;
     }
     this->SmuServicesHaveStarted = true;
 
     return true;
+}
+
+AMDPMTableServices *AMDPlatformPluginSMUServices::getPMTableServices() {
+	return this->pmTbl;
 }

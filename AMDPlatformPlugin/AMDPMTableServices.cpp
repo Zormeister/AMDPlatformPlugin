@@ -7,21 +7,20 @@
 #include <IOKit/IOTypes.h>
 
 bool AMDPMTableServices::init() {
-    callback = this;
     return true;
 }
 
 AMDPMTableServices *AMDPMTableServices::createPMTableServices() {
 	auto *pm = new AMDPMTableServices{};
     if (!pm) { return nullptr; }
-    if (!pm->init()) { return pm; }
+    if (pm->init()) { return pm; }
 	pm->release();
 	return nullptr;
 }
 
 uint32_t AMDPMTableServices::getPmTableVersion() {
     SMUCmd cmd;
-    switch (AMDPlatformPlugin::callback->apuPlatform) {
+    switch (amdpp->apuPlatform) {
         case kAPUPlatformRaven:
         case kAPUPlatformRaven2:
         case kAPUPlatformPicasso:
@@ -36,7 +35,7 @@ uint32_t AMDPMTableServices::getPmTableVersion() {
         default:
             break;
     }
-    switch (AMDPlatformPlugin::callback->desktopPlatform) {
+    switch (amdpp->desktopPlatform) {
         case kDesktopPlatformMatisse:
         case kDesktopPlatformVermeer:
             cmd.msg = 0x08;
@@ -44,10 +43,10 @@ uint32_t AMDPMTableServices::getPmTableVersion() {
         default:
             break;
     }
-    AMDPlatformPluginSMUServices::callback->nullAllArgs(&cmd);
+    smuServices->nullAllArgs(&cmd);
     cmd.args[0] = 0;
     cmd.sendToRSMU = true;
-    AMDPlatformPluginSMUServices::callback->sendCmdToSmu(&AMDPlatformPluginSMUServices::callback->smu, &cmd);
+    smuServices->sendCmdToSmu(&smuServices->smu, &cmd);
 
     return cmd.args[0];
 }
@@ -55,10 +54,10 @@ uint32_t AMDPMTableServices::getPmTableVersion() {
 uint32_t AMDPMTableServices::sendPmTableToDram() {
     SMUCmd cmd;
     cmd.msg = 0;
-    AMDPlatformPluginSMUServices::callback->nullAllArgs(&cmd);
+    smuServices->nullAllArgs(&cmd);
     cmd.args[0] = 0;
 
-    switch (AMDPlatformPlugin::callback->apuPlatform) {
+    switch (amdpp->apuPlatform) {
         case kAPUPlatformRaven:
         case kAPUPlatformRaven2:
         case kAPUPlatformPicasso:
@@ -77,7 +76,7 @@ uint32_t AMDPMTableServices::sendPmTableToDram() {
         default:
             break;
     }
-    switch (AMDPlatformPlugin::callback->desktopPlatform) {
+    switch (amdpp->desktopPlatform) {
         case kDesktopPlatformMatisse:
         case kDesktopPlatformVermeer:
             cmd.msg = 0x05;
@@ -89,11 +88,11 @@ uint32_t AMDPMTableServices::sendPmTableToDram() {
 
     if (cmd.msg == 0) { return SMUReturnUnsupported; }
 
-    return AMDPlatformPluginSMUServices::callback->sendCmdToSmu(&AMDPlatformPluginSMUServices::callback->smu, &cmd);
+    return smuServices->sendCmdToSmu(&smuServices->smu, &cmd);
 }
 
 uint32_t AMDPMTableServices::getPmTableSize() {
-    switch (AMDPlatformPlugin::callback->apuPlatform) {
+    switch (amdpp->apuPlatform) {
         case kAPUPlatformRaven:
         case kAPUPlatformRaven2:
         case kAPUPlatformPicasso:
@@ -137,7 +136,7 @@ uint32_t AMDPMTableServices::getPmTableSize() {
         default:
 			return SMUReturnUnsupported;
     }
-    switch (AMDPlatformPlugin::callback->desktopPlatform) {
+    switch (amdpp->desktopPlatform) {
         case kDesktopPlatformMatisse:
             switch (this->pmTbl.pmTableVersion) {
                 case 0x240902:
@@ -188,20 +187,20 @@ uint32_t AMDPMTableServices::getPmTableSize() {
 
 uint32_t AMDPMTableServices::setupPmTableServices() {
     uint64_t dramBaseAddr =
-        AMDPlatformPluginSMUServices::callback->getSmuDramBaseAddr(&AMDPlatformPluginSMUServices::callback->smu);
+        smuServices->getSmuDramBaseAddr(&smuServices->smu);
     if (dramBaseAddr == 0xFF) {
         return SMUReturnFailed;
     } else if (dramBaseAddr == 0xFB) {
-        AMDPlatformPlugin::callback->log(1, "DRAM Base address grabbing appears to be unsupported.");
+        amdpp->log(1, "DRAM Base address grabbing appears to be unsupported.");
         return SMUReturnUnsupported;
     }
     this->dramBaseAddr = dramBaseAddr;
     this->pmTbl.pmTableVersion = getPmTableVersion();
     sendPmTableToDram();
 	if (!getPmTableSize()) {
-		AMDPlatformPlugin::callback->log(0, "%s: preparing PM table", __PRETTY_FUNCTION__);
+		amdpp->log(0, "%s: preparing PM table", __PRETTY_FUNCTION__);
 		if (this->pmTbl.dramMapPtr == nullptr) {
-			AMDPlatformPlugin::callback->log(0, "%s: mapping DRAM", __PRETTY_FUNCTION__);
+			amdpp->log(0, "%s: mapping DRAM", __PRETTY_FUNCTION__);
 		}
 	}
     return true;

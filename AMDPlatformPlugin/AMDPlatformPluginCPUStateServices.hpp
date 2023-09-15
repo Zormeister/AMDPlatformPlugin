@@ -4,13 +4,16 @@
 // works with ACPI0007 devices, if not AMDPlatformPlugin should default to grabbing them from the processor definitions.
 
 #pragma once
-#include "AMDPlatformPlugin.hpp"
 #include <IOKit/acpi/IOACPIPlatformDevice.h>
+
+struct CPPCPerformanceCaps;
 
 class AMDPlatformPluginCPUStateServices : public IOService {
 	OSDeclareDefaultStructors(AMDPlatformPluginCPUStateServices);
 	
-	bool grabCPPCTable();
+	OSObject *grabCPPCTable();
+	bool doesProcessorUseLegacyMethod();
 	
 	IOACPIPlatformDevice *cpu;
+	CPPCPerformanceCaps *caps;
 };
