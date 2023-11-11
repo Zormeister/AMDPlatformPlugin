@@ -12,38 +12,38 @@ class AMDPlatformPluginTemperatureServices;
 class AMDPMTableServices;
 
 enum CPPCVersions : UInt32 {
-	kCPPCVersion2 = 2,
-	kCPPCVersion3,
+    kCPPCVersion2 = 2,
+    kCPPCVersion3,
 };
 
 static struct CPCReg {
-	UInt8 desc;
-	UInt16 length;
-	UInt8 spaceId;
-	UInt8 bitWidth;
-	UInt8 bitOff;
-	UInt8 accessWidth;
-	UInt64 addr;
+    UInt8 desc;
+    UInt16 length;
+    UInt8 spaceId;
+    UInt8 bitWidth;
+    UInt8 bitOff;
+    UInt8 accessWidth;
+    UInt64 addr;
 } PACKED;
 
 struct CPPCPerformanceCaps {
-	UInt32 energyPerf;
-	UInt32 guaranteedPerf;
-	UInt32 highestPerf;
-	UInt32 lowestFreq;
-	UInt32 lowestNonlinearPerf;
-	UInt32 lowestPerf;
-	UInt32 nominalFreq;
-	UInt32 nominalPerf;
-	bool autoSelEnable;
+    UInt32 energyPerf;
+    UInt32 guaranteedPerf;
+    UInt32 highestPerf;
+    UInt32 lowestFreq;
+    UInt32 lowestNonlinearPerf;
+    UInt32 lowestPerf;
+    UInt32 nominalFreq;
+    UInt32 nominalPerf;
+    bool autoSelEnable;
 };
 
 enum AMDEPPMode : uint32_t {
-	kEPPModeDefault = 0,
-	kEPPModePerformance,
-	kEPPModeBalancePerformance,
-	kEPPModeBalancePowerSavings,
-	kEPPModePowerSavings,
+    kEPPModeDefault = 0,
+    kEPPModePerformance,
+    kEPPModeBalancePerformance,
+    kEPPModeBalancePowerSavings,
+    kEPPModePowerSavings,
 };
 /**
  * `AMDEPPMode Biases`
@@ -59,18 +59,18 @@ enum AMDEPPMode : uint32_t {
  */
 
 constexpr const char *AMDEPPMode2String(AMDEPPMode eppmode) {
-	switch (eppmode) {
-		case kEPPModeDefault:
-			return "Default";
-		case kEPPModePerformance:
-			return "Performance";
-		case kEPPModeBalancePerformance:
-			return "Balanced Performance";
-		case kEPPModeBalancePowerSavings:
-			return "Balanced Power Savings";
-		case kEPPModePowerSavings:
-			return "Power Savings";
-	}
+    switch (eppmode) {
+        case kEPPModeDefault:
+            return "Default";
+        case kEPPModePerformance:
+            return "Performance";
+        case kEPPModeBalancePerformance:
+            return "Balanced Performance";
+        case kEPPModeBalancePowerSavings:
+            return "Balanced Power Savings";
+        case kEPPModePowerSavings:
+            return "Power Savings";
+    }
 }
 
 // Ryzen Mobile/Desktop, APUs in general.
@@ -87,6 +87,90 @@ enum AMDAPUPlatforms : uint32_t {
     kAPUPlatformRembrandt,    // here for reference
     kAPUPlatformMendocino,
     kAPUPlatformPhoenix,    // here for reference
+};
+
+enum struct AMDPlatformCodename {
+    SummitRidge = 0,    // Ryzen 1XXX
+    Naples,             // First-gen EPYC
+    RavenRidge,         // Ryzen 1XXX APUs
+    Whitehaven,         // Threadripper 1XXX
+    PinnacleRidge,      // Ryzen 2XXX
+    Colfax,             // Threadripper 2XXX
+    Picasso,            // Ryzen 3XXX APUs
+    RavenRidge2,
+    Dali,
+    Matisse,       // Ryzen 3XXX
+    Rome,          // Second-gen EPYC
+    CastlePeak,    // Threadripper 3XXX
+    Renoir,        // Ryzen 4XXX APUs
+    Vermeer,       // Ryzen 5XXX
+    Milan,
+    Cezanne,
+    Lucienne,
+    VanGogh,
+    Rembrandt,
+    Chagall,
+    Raphael,
+    Genoa,    //----- UNSUPPORTED BEYOND THIS LINE -----//
+    Phoenix,
+    DragonRange,
+    Mendocino,
+    StormPeak,
+};
+
+struct SMUAddressCollection {
+    UInt32 command;
+    UInt32 arguments;
+    UInt32 response;
+};
+
+SMUAddressCollection kRSMUAddresses1 = {0x3B1051C, 0x3B10590, 0x3B10568};
+SMUAddressCollection kRSMUAddresses2 = {0x3B10524, 0x3B10A40, 0x3B10570};
+SMUAddressCollection kRSMUAddresses3 = {0x3B10A20, 0x3B10A80, 0x3B10A88};
+
+SMUAddressCollection kMP1Addresses1 = {0x3B10528, 0x3B10598, 0x3B10564};
+SMUAddressCollection kMP1Addresses2 = {0x3B10528, 0x3B10998, 0x3B10564};
+SMUAddressCollection kMP1Addresses3 = {0x3B10530, 0x3B109C4, 0x3B1057C};
+
+SMUAddressCollection kHSMPAddresses1 = {0x3B10534, 0x3B109E0, 0x3B10980};
+
+struct AMDPlatform {
+    UInt32 familyId;
+    UInt32 model;
+    UInt32 pkgType;
+    AMDPlatformCodename codename;
+    SMUAddressCollection *rsmu;
+    SMUAddressCollection *hsmp;
+    SMUAddressCollection *mp1;
+};
+
+constexpr UInt32 PKG_TYPE_DONT_CARE = 0xFF;
+constexpr UInt32 PLATFORM_TABLE_END = 0xFFFFFFFF;
+
+AMDPlatform platformTable[] = {
+    {0x17, 0x01, 0x02, AMDPlatformCodename::SummitRidge, &kRSMUAddresses1, nullptr, nullptr},
+    {0x17, 0x01, 0x04, AMDPlatformCodename::Naples, &kRSMUAddresses1, nullptr, nullptr},
+    {0x17, 0x01, 0x07, AMDPlatformCodename::Whitehaven, &kRSMUAddresses1, nullptr, nullptr},
+    {0x17, 0x08, 0x02, AMDPlatformCodename::PinnacleRidge, &kRSMUAddresses1, nullptr, nullptr},
+    {0x17, 0x08, 0x04, AMDPlatformCodename::Colfax, &kRSMUAddresses1, nullptr, nullptr},
+    {0x17, 0x08, 0x07, AMDPlatformCodename::Colfax, &kRSMUAddresses1, nullptr, nullptr},
+    {0x17, 0x11, PKG_TYPE_DONT_CARE, AMDPlatformCodename::RavenRidge, &kRSMUAddresses3, nullptr, nullptr},
+    {0x17, 0x18, 0x02, AMDPlatformCodename::RavenRidge2, &kRSMUAddresses3, nullptr, nullptr},
+    {0x17, 0x11, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Picasso, &kRSMUAddresses3, nullptr, nullptr},
+    {0x17, 0x20, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Dali, &kRSMUAddresses3, nullptr, nullptr},
+    {0x17, 0x31, PKG_TYPE_DONT_CARE, AMDPlatformCodename::CastlePeak, &kRSMUAddresses2, nullptr, &kHSMPAddresses1},
+    {0x17, 0x60, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Renoir, &kRSMUAddresses3, nullptr, nullptr},
+    {0x17, 0x68, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Lucienne, &kRSMUAddresses3, nullptr, nullptr},
+    {0x17, 0x71, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Matisse, &kRSMUAddresses2, nullptr, &kHSMPAddresses1},
+    {0x17, 0x90, PKG_TYPE_DONT_CARE, AMDPlatformCodename::VanGogh, nullptr, nullptr, nullptr},
+    {0x19, 0x01, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Milan, &kRSMUAddresses2, nullptr, &kHSMPAddresses1},
+    {0x19, 0x08, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Chagall, &kRSMUAddresses2, nullptr, &kHSMPAddresses1},
+    {0x19, 0x20, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Vermeer, &kRSMUAddresses2, nullptr, &kHSMPAddresses1},
+    {0x19, 0x21, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Vermeer, &kRSMUAddresses2, nullptr, &kHSMPAddresses1},
+    {0x19, 0x40, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Rembrandt, nullptr, nullptr, nullptr},
+    {0x19, 0x50, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Cezanne, &kRSMUAddresses3, nullptr, nullptr},
+    {0x19, 0x61, PKG_TYPE_DONT_CARE, AMDPlatformCodename::Raphael, &kRSMUAddresses2, nullptr, &kHSMPAddresses1},
+
 };
 
 constexpr const char *AMDAPUPlatforms2String(AMDAPUPlatforms apuplat) {
@@ -242,17 +326,17 @@ enum SystemType : uint32_t {
 };
 
 struct AMDPlatformPluginServices {
-	bool needsCpuStateServices = false; // ACPI0007 devices need it.
-	AMDPlatformPluginCPUStateServices *cpuStateServices;
-	AMDPlatformPluginSMUServices *smuServices;
-	AMDPlatformPluginTemperatureServices *tempServices;
-	AMDPMTableServices *pmTblServices;
+    bool needsCpuStateServices = false;    // ACPI0007 devices need it.
+    AMDPlatformPluginCPUStateServices *cpuStateServices;
+    AMDPlatformPluginSMUServices *smuServices;
+    AMDPlatformPluginTemperatureServices *tempServices;
+    AMDPMTableServices *pmTblServices;
 };
 
 class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
     OSDeclareDefaultStructors(AMDPlatformPlugin);
     virtual bool start(IOService *provider) APPLE_KEXT_OVERRIDE;
-	virtual IOService *probe(IOService *provider, SInt32 *score) APPLE_KEXT_OVERRIDE;
+    virtual IOService *probe(IOService *provider, SInt32 *score) APPLE_KEXT_OVERRIDE;
 
     public:
     void log(uint32_t logLevel, const char *fmt, ...);
@@ -261,14 +345,14 @@ class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
     bool setEPPModeBias();
     OSData *getBoardID();
     bool setupAmdPlatformPlugin();
-	void dumpAmdPPState();
+    void dumpAmdPPState();
     AMDAPUPlatforms apuPlatform;
     AMDHEDTPlatforms hedtPlatform;
     AMDDesktopPlatforms desktopPlatform;
     AMDCurrentPlatform currentPlatform;
 
     private:
-	AMDPlatformPluginServices AMDServices;
+    AMDPlatformPluginServices AMDServices;
     SystemType sysType;
-	bool hasCPPC = false;
+    bool hasCPPC = false;
 };

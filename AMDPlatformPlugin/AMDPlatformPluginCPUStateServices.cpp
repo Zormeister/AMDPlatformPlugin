@@ -4,11 +4,9 @@
 #include "AMDPlatformPluginCPUStateServices.hpp"
 
 OSObject *AMDPlatformPluginCPUStateServices::grabCPPCTable() {
-	OSObject *cpc;
-	if (!cpu->validateObject("_CPC")) {
-		if (!cpu->evaluateObject("_CPC", &cpc, nullptr, 0, 0)) {
-			return cpc;
-		}
-	}
-	return nullptr;
+    OSObject *cpc;
+    if (!cpu->validateObject("_CPC")) {
+        if (!cpu->evaluateObject("_CPC", &cpc, nullptr, 0, 0)) { return cpc; }
+    }
+    return nullptr;
 }

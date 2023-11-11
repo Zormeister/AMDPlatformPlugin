@@ -50,18 +50,14 @@ enum MP1InterfaceVersion : uint32_t {
     kMP1InterfaceV13,
 };
 
-struct SMUInterface {
-    MP1InterfaceVersion ifver;
-    SMUMailboxType mbType;
-    uint32_t addrMbCmd;
-    uint32_t addrMbRsp;
-    uint32_t addrMbArgs;
+enum struct SMUMailbox {
+    MP1,
+    RSMU,
+    HSMP,
 };
 
 struct SMU {
     IOPCIDevice *smu;
-    SMUInterface smuIf;
-    SMUMailboxType mbType;
     UInt32 smuVer;
     SMUReturn lastReturned;
     uint64_t dramBaseAddr;
@@ -71,25 +67,23 @@ struct SMUCmd {
     uint32_t args[6];
     uint32_t msg;
     uint32_t rsp;
-    bool sendToRSMU = false;
+    SMUMailbox toMailbox;
 };
 
 class AMDPlatformPluginSMUServices : public IOService {
     OSDeclareDefaultStructors(AMDPlatformPluginSMUServices);
 
     virtual bool start(IOService *provider) APPLE_KEXT_OVERRIDE;
-	virtual IOService *probe(IOService *provider, SInt32 *score) APPLE_KEXT_OVERRIDE;
+    virtual IOService *probe(IOService *provider, SInt32 *score) APPLE_KEXT_OVERRIDE;
 
     UInt32 readFromSmu(SMU *smu, uint32_t addr);
     SMUReturn writeToSmu(SMU *smu, uint32_t addr, uint32_t val);
-    SMUReturn getAddrForMB(SMU *smu);
-    SMUReturn getAddrForRsmuMB(SMU *smu);
     SMUReturn setupSmuServices(SMU *smu);
     void dumpServicesState();
 
     SMUCmd lastProcessedCmd;
     static AMDPMTableServices *pmTbl;
-	AMDPlatformPlugin *amdpp;
+    AMDPlatformPlugin *amdpp;
 
     public:
     SMU smu;
@@ -98,5 +92,6 @@ class AMDPlatformPluginSMUServices : public IOService {
     SMUReturn sendCmdToSmu(SMU *smu, SMUCmd *cmd);
     UInt32 getSmuVersion(SMU *smu);
     uint64_t getSmuDramBaseAddr(SMU *smu);
-	AMDPMTableServices *getPMTableServices();
+    AMDPMTableServices *getPMTableServices();
+    AMDPlatform *platform;
 };

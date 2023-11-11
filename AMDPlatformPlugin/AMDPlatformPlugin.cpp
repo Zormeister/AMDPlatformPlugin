@@ -2,10 +2,10 @@
 //  details.
 
 #include "AMDPlatformPlugin.hpp"
+#include "AMDPMTableServices.hpp"
 #include "AMDPlatformPluginCPUStateServices.hpp"
 #include "AMDPlatformPluginSMUServices.hpp"
 #include "AMDPlatformPluginTemperatureServices.hpp"
-#include "AMDPMTableServices.hpp"
 #include <IOKit/IOService.h>
 #include <i386/cpuid.h>
 #include <i386/pmCPU.h>
@@ -47,9 +47,9 @@ OSData *AMDPlatformPlugin::getBoardID() {
     return 0;
 }
 
-bool AMDPlatformPlugin::setupAmdPlatformPlugin() { 
-	this->AMDServices.tempServices = AMDPlatformPluginTemperatureServices::createTemperatureServices();
-	return true;
+bool AMDPlatformPlugin::setupAmdPlatformPlugin() {
+    this->AMDServices.tempServices = AMDPlatformPluginTemperatureServices::createTemperatureServices();
+    return true;
 }
 
 bool AMDPlatformPlugin::start(IOService *provider) {
@@ -66,24 +66,25 @@ bool AMDPlatformPlugin::start(IOService *provider) {
 }
 
 IOService *AMDPlatformPlugin::probe(IOService *provider, SInt32 *score) {
-	OSDictionary *res = IOService::serviceMatching("AMDPlatformPluginSMUServices");
-	auto iter = getMatchingServices(res);
-	res->release();
-	if (res) {
-		this->AMDServices.smuServices = OSDynamicCast(AMDPlatformPluginSMUServices, iter->getNextObject());
-		iter->release();
-		res = IOService::serviceMatching("AMDPlatformPluginCPUStateServices");
-		if (res) {
-			auto iter = getMatchingServices(res);
-			res->release();
-			this->AMDServices.cpuStateServices = OSDynamicCast(AMDPlatformPluginCPUStateServices, iter->getNextObject());
-			iter->release();
-		}
-		// CPUStateServices is non-essential, so we can skip it in-case something happens
-		return IOService::probe(provider, score);
-	}
-	log(2, "%s: failed probing!", __PRETTY_FUNCTION__);
-	return nullptr;
+    OSDictionary *res = IOService::serviceMatching("AMDPlatformPluginSMUServices");
+    if (res) {
+        auto iter = getMatchingServices(res);
+        res->release();
+        this->AMDServices.smuServices = OSDynamicCast(AMDPlatformPluginSMUServices, iter->getNextObject());
+        iter->release();
+        res = IOService::serviceMatching("AMDPlatformPluginCPUStateServices");
+        if (res) {
+            auto iter = getMatchingServices(res);
+            res->release();
+            this->AMDServices.cpuStateServices =
+                OSDynamicCast(AMDPlatformPluginCPUStateServices, iter->getNextObject());
+            iter->release();
+        }
+        // CPUStateServices is non-essential, so we can skip it in-case something happens
+        return IOService::probe(provider, score);
+    }
+    log(2, "%s: failed probing!", __PRETTY_FUNCTION__);
+    return nullptr;
 }
 
 bool AMDPlatformPlugin::waitForSmuServicesRunning() {
@@ -96,127 +97,12 @@ bool AMDPlatformPlugin::waitForSmuServicesRunning() {
     return true;
 }
 
-#define bit32(n)            (1U << (n))
-#define bitmask32(h, l)     ((bit32(h) | (bit32(h) - 1)) & ~(bit32(l) - 1))
-#define bitfield32(x, h, l) ((((x)&bitmask32(h, l)) >> l))
-
 bool AMDPlatformPlugin::setPlatform() {
     uint32_t reg[4];
-    do_cpuid(1, reg);
-    uint32_t cpuFamily = bitfield32(reg[eax], 11, 8) + bitfield32(reg[eax], 27, 20);
-    uint32_t cpuBModel = bitfield32(reg[eax], 7, 4);
-    uint32_t cpuEModel = bitfield32(reg[eax], 27, 20);
+    do_cpuid(0x1, reg);
+    UInt32 cpufamily = ((reg[eax] & 0xf00) >> 8) + ((reg[eax] & 0xff00000) >> 20);
+    UInt32 cpumodel = ((reg[eax] & 0xf0000) >> 12) + ((reg[eax] & 0xf0) >> 4);
     do_cpuid(0x80000001, reg);
-    uint32_t pkgType = bitfield32(reg[ebx], 31, 28);
-    switch (cpuFamily) {
-        case 0x17: {
-            switch (cpuEModel) {
-                case 0x0: {
-                    if (cpuBModel == 0x1) {
-                        if (pkgType == 7) {
-                            this->currentPlatform = kAMDPlatformHEDT;
-                            this->hedtPlatform = kHEDTPlatformWhitehaven;
-                        } else {
-                            this->currentPlatform = kAMDPlatformDesktop;
-                            this->desktopPlatform = kDesktopPlatformSummitRidge;
-                        }
-                    } else if (cpuBModel == 0x8) {
-                        if (pkgType == 7) {
-                            this->currentPlatform = kAMDPlatformHEDT;
-                            this->hedtPlatform = kHEDTPlatformColfax;
-                        } else {
-                            this->currentPlatform = kAMDPlatformDesktop;
-                            this->desktopPlatform = kDesktopPlatformPinnacleRidge;
-                        }
-                    }
-                    break;
-                }
-                case 0x1: {
-                    this->currentPlatform = kAMDPlatformAPU;
-                    if (cpuBModel == 0x1) {
-                        this->apuPlatform = kAPUPlatformRaven;
-                    } else if (cpuBModel == 0x8) {
-                        if (pkgType == 2) {
-                            this->apuPlatform = kAPUPlatformRaven2;
-                        } else {
-                            this->apuPlatform = kAPUPlatformPicasso;
-                        }
-                    }
-                    break;
-                }
-                case 0x2: {
-                    if (cpuBModel == 0) {
-                        this->currentPlatform = kAMDPlatformAPU;
-                        this->apuPlatform = kAPUPlatformDali;
-                    }
-                    break;
-                }
-                case 0x3: {
-                    if (cpuBModel == 0x1) {
-                        this->currentPlatform = kAMDPlatformHEDT;
-                        this->hedtPlatform = kHEDTPlatformCastlePeak;
-                    }
-                    break;
-                }
-                case 0x6: {
-                    this->currentPlatform = kAMDPlatformAPU;
-                    if (cpuBModel == 0x0) {
-                        this->apuPlatform = kAPUPlatformRenoir;
-                    } else if (cpuBModel == 0x8) {
-                        this->apuPlatform = kAPUPlatformLucienne;
-                    }
-                    break;
-                }
-                case 0x7: {
-                    if (cpuBModel == 0x1) {
-                        this->currentPlatform = kAMDPlatformDesktop;
-                        this->desktopPlatform = kDesktopPlatformMatisse;
-                    }
-                    break;
-                }
-                case 0x9: {
-                    if (cpuBModel == 0x0) {
-                        this->currentPlatform = kAMDPlatformAPU;
-                        this->apuPlatform = kAPUPlatformVanGogh;
-                    }
-                    break;
-                }
-                case 0xA: {
-                    if (cpuBModel == 0x0) {
-                        this->currentPlatform = kAMDPlatformAPU;
-                        this->apuPlatform = kAPUPlatformMendocino;
-                    }
-                    break;
-                }
-            }
-            break;
-        }
-        case 0x19: {
-            switch (cpuEModel) {
-                case 0x2: {
-                    if (cpuBModel == 0x0 || cpuBModel == 0x1) {
-                        this->currentPlatform = kAMDPlatformDesktop;
-                        this->desktopPlatform = kDesktopPlatformVermeer;
-                    }
-                    break;
-                }
-                case 0x4: {
-                    if (cpuBModel == 0) {
-                        this->currentPlatform = kAMDPlatformAPU;
-                        this->apuPlatform = kAPUPlatformRembrandt;
-                        break;
-                    }
-                }
-                case 0x5: {
-                    if (cpuBModel == 0) {
-                        this->currentPlatform = kAMDPlatformAPU;
-                        this->apuPlatform = kAPUPlatformCezanne;
-                    }
-                    break;
-                }
-            }
-            break;
-        }
-    }
+    uint32_t pkgType = (reg[ebx] >> 28);
     return true;
 }

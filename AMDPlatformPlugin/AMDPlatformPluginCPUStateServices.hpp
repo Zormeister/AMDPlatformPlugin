@@ -9,11 +9,11 @@
 struct CPPCPerformanceCaps;
 
 class AMDPlatformPluginCPUStateServices : public IOService {
-	OSDeclareDefaultStructors(AMDPlatformPluginCPUStateServices);
-	
-	OSObject *grabCPPCTable();
-	bool doesProcessorUseLegacyMethod();
-	
-	IOACPIPlatformDevice *cpu;
-	CPPCPerformanceCaps *caps;
+    OSDeclareDefaultStructors(AMDPlatformPluginCPUStateServices);
+
+    OSObject *grabCPPCTable();
+    bool doesProcessorUseLegacyMethod();
+
+    IOACPIPlatformDevice *cpu;
+    CPPCPerformanceCaps *caps;
 };

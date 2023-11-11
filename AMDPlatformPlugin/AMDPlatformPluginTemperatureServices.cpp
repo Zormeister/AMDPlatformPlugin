@@ -4,9 +4,9 @@
 #include "AMDPlatformPluginTemperatureServices.hpp"
 
 AMDPlatformPluginTemperatureServices *AMDPlatformPluginTemperatureServices::createTemperatureServices() {
-	auto *temp = new AMDPlatformPluginTemperatureServices{};
+    auto *temp = new AMDPlatformPluginTemperatureServices {};
     if (!temp) { return nullptr; }
     if (temp->init()) { return temp; }
-	temp->release();
-	return nullptr;
+    temp->release();
+    return nullptr;
 }

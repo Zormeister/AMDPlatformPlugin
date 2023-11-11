@@ -4,7 +4,7 @@
 #include <IOKit/IOService.h>
 
 struct AMDPPTSStruct {
-	uint32_t timeBeforeRecheck;
+    uint32_t timeBeforeRecheck;
 };
 
 class AMDPlatformPluginTemperatureServices : public OSObject {
@@ -14,6 +14,5 @@ class AMDPlatformPluginTemperatureServices : public OSObject {
     void dumpServicesState();
 
     public:
-	static AMDPlatformPluginTemperatureServices *createTemperatureServices();
+    static AMDPlatformPluginTemperatureServices *createTemperatureServices();
 };
-

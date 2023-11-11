@@ -4,18 +4,35 @@
 #include "AMDPMTableServices.hpp"
 #include "AMDPlatformPlugin.hpp"
 #include "AMDPlatformPluginSMUServices.hpp"
+#include <IOKit/IOTimerEventSource.h>
 #include <IOKit/IOTypes.h>
 
 bool AMDPMTableServices::init() {
-    return true;
+    auto res = IOService::serviceMatching("AMDPlatformPluginSMUServices");
+    auto iter = IOService::getMatchingServices(res);
+    if (res) {
+        this->smuServices = OSDynamicCast(AMDPlatformPluginSMUServices, iter->getNextObject());
+        iter->release();
+        res->release();
+        res = IOService::serviceMatching("AMDPlatformPlugin");
+        iter = IOService::getMatchingServices(res);
+        res->release();
+        if (res) {
+            this->amdpp = OSDynamicCast(AMDPlatformPlugin, iter->getNextObject());
+            iter->release();
+            return true;
+        }
+        return false;
+    }
+    return false;
 }
 
 AMDPMTableServices *AMDPMTableServices::createPMTableServices() {
-	auto *pm = new AMDPMTableServices{};
+    auto *pm = new AMDPMTableServices {};
     if (!pm) { return nullptr; }
     if (pm->init()) { return pm; }
-	pm->release();
-	return nullptr;
+    pm->release();
+    return nullptr;
 }
 
 uint32_t AMDPMTableServices::getPmTableVersion() {
@@ -134,7 +151,7 @@ uint32_t AMDPMTableServices::getPmTableSize() {
             }
             break;
         default:
-			return SMUReturnUnsupported;
+            return SMUReturnUnsupported;
     }
     switch (amdpp->desktopPlatform) {
         case kDesktopPlatformMatisse:
@@ -180,14 +197,13 @@ uint32_t AMDPMTableServices::getPmTableSize() {
             }
             break;
         default:
-			return SMUReturnUnsupported;
+            return SMUReturnUnsupported;
     }
     return 0;
 }
 
 uint32_t AMDPMTableServices::setupPmTableServices() {
-    uint64_t dramBaseAddr =
-        smuServices->getSmuDramBaseAddr(&smuServices->smu);
+    uint64_t dramBaseAddr = smuServices->getSmuDramBaseAddr(&smuServices->smu);
     if (dramBaseAddr == 0xFF) {
         return SMUReturnFailed;
     } else if (dramBaseAddr == 0xFB) {
@@ -197,11 +213,9 @@ uint32_t AMDPMTableServices::setupPmTableServices() {
     this->dramBaseAddr = dramBaseAddr;
     this->pmTbl.pmTableVersion = getPmTableVersion();
     sendPmTableToDram();
-	if (!getPmTableSize()) {
-		amdpp->log(0, "%s: preparing PM table", __PRETTY_FUNCTION__);
-		if (this->pmTbl.dramMapPtr == nullptr) {
-			amdpp->log(0, "%s: mapping DRAM", __PRETTY_FUNCTION__);
-		}
-	}
+    if (!getPmTableSize()) {
+        amdpp->log(0, "%s: preparing PM table", __PRETTY_FUNCTION__);
+        if (this->pmTbl.dramMapPtr == nullptr) { amdpp->log(0, "%s: mapping DRAM", __PRETTY_FUNCTION__); }
+    }
     return true;
 }

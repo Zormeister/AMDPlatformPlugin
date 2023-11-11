@@ -33,6 +33,6 @@ class AMDPMTableServices : public OSObject {
     uint64_t dramBaseAddr;
     uint64_t dramBaseAddr2;
     PMTable pmTbl;
-	AMDPlatformPlugin *amdpp;
-	AMDPlatformPluginSMUServices *smuServices;
+    AMDPlatformPlugin *amdpp;
+    AMDPlatformPluginSMUServices *smuServices;
 };
