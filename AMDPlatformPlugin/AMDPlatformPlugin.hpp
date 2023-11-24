@@ -3,8 +3,9 @@
 
 #pragma once
 #include <IOPlatformPluginFamily/IOPlatformPluginFamilyPriv.hpp>
-#include "AMDPlatformPluginEventRecorder.hpp"
-#include "AMDPlatformPluginMonitor.hpp"
+
+class AMDPlatformPluginEventRecorder;
+class AMDPlatformPluginMonitor;
 
 enum struct AMDRequest {
 	EventRecord = 0,

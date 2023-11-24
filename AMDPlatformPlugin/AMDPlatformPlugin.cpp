@@ -2,6 +2,8 @@
 //! See LICENSE for details.
 
 #include "AMDPlatformPlugin.hpp"
+#include "AMDPlatformPluginEventRecorder.hpp"
+#include "AMDPlatformPluginMonitor.hpp"
 
 #define super IOPlatformPluginFamilyPriv
 
