@@ -5,7 +5,7 @@
 #include <IOKit/IOService.h>
 
 class IOPlatformPluginFamily : public IOService {
-	OSDeclareDefaultStructors(IOPlatformPluginFamily);
+	OSDeclareAbstractStructors(IOPlatformPluginFamily);
 	
 	virtual IOReturn setProperties(OSObject *object) APPLE_KEXT_OVERRIDE;
 	IOReturn platformASPMEnable(IOService *service);

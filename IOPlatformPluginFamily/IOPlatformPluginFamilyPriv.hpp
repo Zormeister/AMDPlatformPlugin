@@ -22,11 +22,11 @@ enum {
 };
 
 class IOPlatformPluginFamilyPriv : public IOPlatformPluginFamily {
-	OSDeclareDefaultStructors(IOPlatformPluginFamilyPriv);
+	OSDeclareAbstractStructors(IOPlatformPluginFamilyPriv);
 	
 	virtual bool start(IOService *provider) APPLE_KEXT_OVERRIDE;
 	virtual void stop(IOService *provider) APPLE_KEXT_OVERRIDE;
-	IOReturn initSymvols();
+	IOReturn initSymbols();
 	IOReturn setProperties(OSObject *object) APPLE_KEXT_OVERRIDE;
 	void releaseSymbols();
 	IOReturn pluginGetDiagProperty(OSSymbol *sym, OSSymbol *something);

@@ -45,39 +45,6 @@
 				<integer>0</integer>
 			</dict>
 		</dict>
-		<key>AMDPlatformPluginCPUStateServices</key>
-		<dict>
-			<key>CFBundleIdentifier</key>
-			<string>com.ChefKissInc.AMDPlatformPlugin</string>
-			<key>IOProbeScore</key>
-			<integer>2000</integer>
-			<key>IOClass</key>
-			<string>AMDPlatformPluginCPUStateServices</string>
-			<key>IOMatchCategory</key>
-			<string>ACPI</string>
-			<key>IOProviderClass</key>
-			<string>IOACPIPlatformDevice</string>
-			<key>IOPropertyMatch</key>
-			<dict>
-				<key>name</key>
-				<string>ACPI0007</string>
-			</dict>
-		</dict>
-		<key>AMDPlatformPluginSMUServices</key>
-		<dict>
-			<key>CFBundleIdentifier</key>
-			<string>com.ChefKissInc.AMDPlatformPlugin</string>
-			<key>IOProbeScore</key>
-			<integer>2000</integer>
-			<key>IOClass</key>
-			<string>AMDPlatformPluginSMUServices</string>
-			<key>IOMatchCategory</key>
-			<string>AMDPlatformPluginSMUServices</string>
-			<key>IOProviderClass</key>
-			<string>IOPCIDevice</string>
-			<key>IOPCIMatch</key>
-			<string>0x14501022 0x14801022 0x15d01022 0x16301002</string>
-		</dict>
 	</dict>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2023 ChefKiss Inc. All rights reserved.</string>
