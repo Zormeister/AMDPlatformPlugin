@@ -33,9 +33,15 @@ class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
 	
 	IOReturn handleMessage(AMDMonitorMessage msg);
 	
+	AMDPlatformPluginMonitor *getMonitor();
+	
 private:
 	bool hasSMBIOSBias;
 	
 	AMDPlatformPluginEventRecorder *recorder;
 	AMDPlatformPluginMonitor *monitor;
+	
+	AMDEPPIndex activeIdx = AMDEPPIndex::Default;
+	UInt32 cpuFamily;
+	UInt32 cpuModel;
 };

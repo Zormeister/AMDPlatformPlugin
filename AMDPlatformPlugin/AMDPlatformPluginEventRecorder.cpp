@@ -4,6 +4,8 @@
 #include "AMDPlatformPluginEventRecorder.hpp"
 #include <IOKit/IOLib.h>
 
+OSDefineMetaClassAndStructors(AMDPlatformPluginEventRecorder, OSObject);
+
 AMDPlatformPluginEventRecorder *AMDPlatformPluginEventRecorder::eventRecorder() {
 	auto *ev = new AMDPlatformPluginEventRecorder;
 	if (!ev) {

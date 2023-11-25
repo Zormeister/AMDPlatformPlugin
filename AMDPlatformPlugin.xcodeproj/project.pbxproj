@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F098433F2B10792B00FFC85C /* AMDPlatformPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F098433D2B10792B00FFC85C /* AMDPlatformPlugin.cpp */; };
 		F09843402B10792B00FFC85C /* AMDPlatformPlugin.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F098433E2B10792B00FFC85C /* AMDPlatformPlugin.hpp */; };
-		F09843432B10796600FFC85C /* AMDPlatformPluginMonitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F09843412B10796600FFC85C /* AMDPlatformPluginMonitor.cpp */; };
 		F09843442B10796600FFC85C /* AMDPlatformPluginMonitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F09843422B10796600FFC85C /* AMDPlatformPluginMonitor.hpp */; };
-		F09843472B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F09843452B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.cpp */; };
 		F09843482B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F09843462B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.hpp */; };
+		F098434C2B11310900FFC85C /* AMDPlatformPluginUserClient.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F098434A2B11310900FFC85C /* AMDPlatformPluginUserClient.hpp */; };
+		F098434F2B11320900FFC85C /* AMDPlatformPluginACPIInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F098434D2B11320900FFC85C /* AMDPlatformPluginACPIInterface.cpp */; };
+		F09843502B11320900FFC85C /* AMDPlatformPluginACPIInterface.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F098434E2B11320900FFC85C /* AMDPlatformPluginACPIInterface.hpp */; };
+		F09843592B1136C300FFC85C /* SMCAMDPlatformPlugin.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F09843582B1136C300FFC85C /* SMCAMDPlatformPlugin.hpp */; };
+		F098435B2B1136C300FFC85C /* SMCAMDPlatformPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F098435A2B1136C300FFC85C /* SMCAMDPlatformPlugin.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,11 +41,26 @@
 		F09843422B10796600FFC85C /* AMDPlatformPluginMonitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPlatformPluginMonitor.hpp; sourceTree = "<group>"; };
 		F09843452B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPlatformPluginEventRecorder.cpp; sourceTree = "<group>"; };
 		F09843462B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPlatformPluginEventRecorder.hpp; sourceTree = "<group>"; };
+		F09843492B11310900FFC85C /* AMDPlatformPluginUserClient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPlatformPluginUserClient.cpp; sourceTree = "<group>"; };
+		F098434A2B11310900FFC85C /* AMDPlatformPluginUserClient.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPlatformPluginUserClient.hpp; sourceTree = "<group>"; };
+		F098434D2B11320900FFC85C /* AMDPlatformPluginACPIInterface.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AMDPlatformPluginACPIInterface.cpp; sourceTree = "<group>"; };
+		F098434E2B11320900FFC85C /* AMDPlatformPluginACPIInterface.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AMDPlatformPluginACPIInterface.hpp; sourceTree = "<group>"; };
+		F09843562B1136C300FFC85C /* SMCAMDPlatformPlugin.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SMCAMDPlatformPlugin.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		F09843582B1136C300FFC85C /* SMCAMDPlatformPlugin.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SMCAMDPlatformPlugin.hpp; sourceTree = "<group>"; };
+		F098435A2B1136C300FFC85C /* SMCAMDPlatformPlugin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SMCAMDPlatformPlugin.cpp; sourceTree = "<group>"; };
+		F098435C2B1136C300FFC85C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0E2A20A2A9C596B00E161B6 /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		1C748C231C21952C0024EED2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F09843532B1136C300FFC85C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -58,6 +75,7 @@
 			children = (
 				1C748C291C21952C0024EED2 /* AMDPlatformPlugin */,
 				F02031FF2A9AE3150099AC1D /* IOPlatformPluginFamily */,
+				F09843572B1136C300FFC85C /* SMCAMDPlatformPlugin */,
 				1C748C281C21952C0024EED2 /* Products */,
 				CE8DA0812517C41A008C44E8 /* Frameworks */,
 			);
@@ -68,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				1C748C271C21952C0024EED2 /* AMDPlatformPlugin.kext */,
+				F09843562B1136C300FFC85C /* SMCAMDPlatformPlugin.kext */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,10 +97,14 @@
 				1C748C2E1C21952C0024EED2 /* Info.plist */,
 				F098433D2B10792B00FFC85C /* AMDPlatformPlugin.cpp */,
 				F098433E2B10792B00FFC85C /* AMDPlatformPlugin.hpp */,
+				F098434D2B11320900FFC85C /* AMDPlatformPluginACPIInterface.cpp */,
+				F098434E2B11320900FFC85C /* AMDPlatformPluginACPIInterface.hpp */,
 				F09843452B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.cpp */,
 				F09843462B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.hpp */,
 				F09843412B10796600FFC85C /* AMDPlatformPluginMonitor.cpp */,
 				F09843422B10796600FFC85C /* AMDPlatformPluginMonitor.hpp */,
+				F09843492B11310900FFC85C /* AMDPlatformPluginUserClient.cpp */,
+				F098434A2B11310900FFC85C /* AMDPlatformPluginUserClient.hpp */,
 			);
 			path = AMDPlatformPlugin;
 			sourceTree = "<group>";
@@ -103,6 +126,16 @@
 			path = IOPlatformPluginFamily;
 			sourceTree = "<group>";
 		};
+		F09843572B1136C300FFC85C /* SMCAMDPlatformPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				F09843582B1136C300FFC85C /* SMCAMDPlatformPlugin.hpp */,
+				F098435A2B1136C300FFC85C /* SMCAMDPlatformPlugin.cpp */,
+				F098435C2B1136C300FFC85C /* Info.plist */,
+			);
+			path = SMCAMDPlatformPlugin;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -110,9 +143,19 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F09843502B11320900FFC85C /* AMDPlatformPluginACPIInterface.hpp in Headers */,
 				F09843482B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.hpp in Headers */,
+				F098434C2B11310900FFC85C /* AMDPlatformPluginUserClient.hpp in Headers */,
 				F09843442B10796600FFC85C /* AMDPlatformPluginMonitor.hpp in Headers */,
 				F09843402B10792B00FFC85C /* AMDPlatformPlugin.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F09843512B1136C300FFC85C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F09843592B1136C300FFC85C /* SMCAMDPlatformPlugin.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +181,24 @@
 			productReference = 1C748C271C21952C0024EED2 /* AMDPlatformPlugin.kext */;
 			productType = "com.apple.product-type.kernel-extension";
 		};
+		F09843552B1136C300FFC85C /* SMCAMDPlatformPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F098435D2B1136C300FFC85C /* Build configuration list for PBXNativeTarget "SMCAMDPlatformPlugin" */;
+			buildPhases = (
+				F09843512B1136C300FFC85C /* Headers */,
+				F09843522B1136C300FFC85C /* Sources */,
+				F09843532B1136C300FFC85C /* Frameworks */,
+				F09843542B1136C300FFC85C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SMCAMDPlatformPlugin;
+			productName = SMCAMDPlatformPlugin;
+			productReference = F09843562B1136C300FFC85C /* SMCAMDPlatformPlugin.kext */;
+			productType = "com.apple.product-type.kernel-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -149,6 +210,10 @@
 				TargetAttributes = {
 					1C748C261C21952C0024EED2 = {
 						CreatedOnToolsVersion = 7.2;
+					};
+					F09843552B1136C300FFC85C = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -166,9 +231,20 @@
 			projectRoot = "";
 			targets = (
 				1C748C261C21952C0024EED2 /* AMDPlatformPlugin */,
+				F09843552B1136C300FFC85C /* SMCAMDPlatformPlugin */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F09843542B1136C300FFC85C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		CE131D6A1FB728990036C3A0 /* Archive */ = {
@@ -192,9 +268,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F098433F2B10792B00FFC85C /* AMDPlatformPlugin.cpp in Sources */,
-				F09843432B10796600FFC85C /* AMDPlatformPluginMonitor.cpp in Sources */,
-				F09843472B10A63D00FFC85C /* AMDPlatformPluginEventRecorder.cpp in Sources */,
+				F098434F2B11320900FFC85C /* AMDPlatformPluginACPIInterface.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F09843522B1136C300FFC85C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F098435B2B1136C300FFC85C /* SMCAMDPlatformPlugin.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,8 +438,6 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MODULE_NAME = com.ChefKissInc.AMDPlatformPlugin;
-				MODULE_START = "$(PRODUCT_NAME)_kern_start";
-				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
 				MODULE_VERSION = 1.0.0;
 				OTHER_CFLAGS = (
 					"-mmmx",
@@ -413,8 +493,6 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MODULE_NAME = com.ChefKissInc.AMDPlatformPlugin;
-				MODULE_START = "$(PRODUCT_NAME)_kern_start";
-				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
 				MODULE_VERSION = 1.0.0;
 				OTHER_CFLAGS = (
 					"-mmmx",
@@ -527,8 +605,6 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MODULE_NAME = com.ChefKissInc.AMDPlatformPlugin;
-				MODULE_START = "$(PRODUCT_NAME)_kern_start";
-				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
 				MODULE_VERSION = 1.0.0;
 				OTHER_CFLAGS = (
 					"-mmmx",
@@ -555,6 +631,114 @@
 			};
 			name = Sanitize;
 		};
+		F098435E2B1136C300FFC85C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0.0;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/MacKernelSDK/Headers",
+					"$(PROJECT_DIR)/VirtualSMC",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = SMCAMDPlatformPlugin/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MODULE_NAME = com.ChefKissInc.SMCAMDPlatformPlugin;
+				MODULE_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChefKissInc.SMCAMDPlatformPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Debug;
+		};
+		F098435F2B1136C300FFC85C /* Sanitize */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0.0;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SMCAMDPlatformPlugin/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MODULE_NAME = com.ChefKissInc.SMCAMDPlatformPlugin;
+				MODULE_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChefKissInc.SMCAMDPlatformPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Sanitize;
+		};
+		F09843602B1136C300FFC85C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0.0;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/MacKernelSDK/Headers",
+					"$(PROJECT_DIR)/VirtualSMC",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = SMCAMDPlatformPlugin/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MODULE_NAME = com.ChefKissInc.SMCAMDPlatformPlugin;
+				MODULE_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChefKissInc.SMCAMDPlatformPlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -574,6 +758,16 @@
 				1C748C321C21952C0024EED2 /* Debug */,
 				CE9901CB21456F6C006E5CF5 /* Sanitize */,
 				1C748C331C21952C0024EED2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F098435D2B1136C300FFC85C /* Build configuration list for PBXNativeTarget "SMCAMDPlatformPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F098435E2B1136C300FFC85C /* Debug */,
+				F098435F2B1136C300FFC85C /* Sanitize */,
+				F09843602B1136C300FFC85C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

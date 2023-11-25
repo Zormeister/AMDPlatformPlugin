@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,42 +15,19 @@
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(MODULE_VERSION)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(MODULE_VERSION)</string>
-	<key>IOKitPersonalities</key>
-	<dict>
-		<key>ACPI Interface</key>
-		<dict>
-			<key>CFBundleIdentifier</key>
-			<string>com.ChefKissInc.AMDPlatformPlugin</string>
-			<key>IOProbeScore</key>
-			<integer>2000</integer>
-			<key>IOClass</key>
-			<string>AMDPlatformPluginACPIInterface</string>
-			<key>IOMatchCategory</key>
-			<string>ACPI</string>
-			<key>IOProviderClass</key>
-			<string>IOACPIPlatformDevice</string>
-			<key>IOPropertyMatch</key>
-			<dict>
-				<key>name</key>
-				<string>ACPI0007</string>
-			</dict>
-		</dict>
-	</dict>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2023 ChefKiss Inc. All rights reserved.</string>
-	<key>OSBundleCompatibleVersion</key>
 	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>IOKitPersonalities</key>
+	<dict/>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2023 ChefKissInc. All rights reserved.</string>
 	<key>OSBundleLibraries</key>
 	<dict>
-		<key>com.apple.iokit.IOACPIFamily</key>
-		<string>1.0.0b1</string>
-		<key>com.apple.iokit.IOPCIFamily</key>
-		<string>1.0.0b1</string>
+		<key>com.ChefKissInc.AMDPlatformPlugin</key>
+		<string>1.0</string>
+		<key>as.vit9696.VirtualSMC</key>
+		<string></string>
 		<key>com.apple.kpi.bsd</key>
 		<string>10.0.0</string>
 		<key>com.apple.kpi.dsep</key>

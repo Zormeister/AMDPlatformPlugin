@@ -5,6 +5,12 @@
 #include "AMDPlatformPlugin.hpp"
 #include <IOKit/pwr_mgt/IOPMPowerSource.h>
 
+struct AMDMonitorStatistics {
+	bool isAcConnected;
+	UInt32 temp;
+	UInt32 voltage;
+};
+
 class AMDPlatformPluginMonitor : public OSObject {
 	OSDeclareDefaultStructors(AMDPlatformPluginMonitor);
 	
@@ -12,5 +18,9 @@ class AMDPlatformPluginMonitor : public OSObject {
 	
 	static AMDPlatformPluginMonitor *withPlatformPlugin(AMDPlatformPlugin *pp);
 	
+	AMDMonitorStatistics *getStatistics();
+	
 	void setupTimers();
+	
+	AMDMonitorStatistics stats;
 };
