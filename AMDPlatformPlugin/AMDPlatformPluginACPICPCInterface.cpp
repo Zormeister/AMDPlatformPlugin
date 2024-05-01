@@ -1,25 +1,25 @@
 //! Copyright © 2023 ChefKiss Inc. Licensed under the Thou Shalt Not Profit License version 1.5.
 //! See LICENSE for details.
 
-#include "AMDPlatformPluginACPIInterface.hpp"
+#include "AMDPlatformPluginACPICPCInterface.hpp"
 
-OSDefineMetaClassAndStructors(AMDPlatformPluginACPIInterface, IOService);
+OSDefineMetaClassAndStructors(AMDPlatformPluginACPICPCInterface, AMDPlatformPluginInterface);
 
-bool AMDPlatformPluginACPIInterface::start(IOService *provider) {
-	this->cpu = OSDynamicCast(IOACPIPlatformDevice, provider);
-	if (!this->cpu) {
+bool AMDPlatformPluginACPICPCInterface::start(IOService *provider) {
+	this->cpuHandle = OSDynamicCast(IOACPIPlatformDevice, provider);
+	if (!this->cpuHandle) {
 		IOLog("ERROR: %s: failed to cast provider!", __BASE_FILE__);
 		return false;
 	}
 	
-	if (this->cpu->validateObject("_CPC")) {
+	if (this->cpuHandle->validateObject("_CPC")) {
 		IOLog("ERROR: %s: _CPC object could not be found!", __BASE_FILE__);
 		return false;
 	}
 	
 	OSObject *obj = nullptr;
 	
-	this->cpu->evaluateObject("_CPC", &obj);
+	this->cpuHandle->evaluateObject("_CPC", &obj);
 	
 	OSArray *cpc = OSDynamicCast(OSArray, obj);
 	if (!cpc) {
@@ -81,4 +81,14 @@ bool AMDPlatformPluginACPIInterface::start(IOService *provider) {
 	provider->setProperty("CPC Array", cpc);
 	
 	return true;
+}
+
+IOReturn AMDPlatformPluginACPICPCInterface::handleMonitorRequest(MonitorRequestData *data) {
+	switch (data->req) {
+		case MonitorRequest::FrequencyControlData:
+		    //! fill in info & handoff to monitor
+		    return kIOReturnSuccess;
+		default:
+		    return kIOReturnUnsupported;
+	};
 }

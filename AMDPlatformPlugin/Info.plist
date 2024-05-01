@@ -22,14 +22,14 @@
 	<string>$(MODULE_VERSION)</string>
 	<key>IOKitPersonalities</key>
 	<dict>
-		<key>ACPI Interface</key>
+		<key>ACPI CPC Interface</key>
 		<dict>
 			<key>CFBundleIdentifier</key>
 			<string>com.ChefKissInc.AMDPlatformPlugin</string>
 			<key>IOProbeScore</key>
 			<integer>2000</integer>
 			<key>IOClass</key>
-			<string>AMDPlatformPluginACPIInterface</string>
+			<string>AMDPlatformPluginACPICPCInterface</string>
 			<key>IOMatchCategory</key>
 			<string>ACPI</string>
 			<key>IOProviderClass</key>

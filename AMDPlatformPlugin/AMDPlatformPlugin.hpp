@@ -1,4 +1,4 @@
-//! Copyright © 2023 ChefKiss Inc. Licensed under the Thou Shalt Not Profit License version 1.5.
+//! Copyright © 2023-2024 ChefKiss Inc. Licensed under the Thou Shalt Not Profit License version 1.5.
 //! See LICENSE for details.
 
 #pragma once
@@ -34,6 +34,10 @@ class AMDPlatformPlugin : public IOPlatformPluginFamilyPriv {
 	IOReturn handleMessage(AMDMonitorMessage msg);
 	
 	AMDPlatformPluginMonitor *getMonitor();
+
+	friend class AMDPlatformPluginInterface;
+	friend class AMDPlatformPluginACPICPCInterface;
+	friend class AMDPlatformPluginACPIThermalZoneInterface;
 	
 private:
 	bool hasSMBIOSBias;

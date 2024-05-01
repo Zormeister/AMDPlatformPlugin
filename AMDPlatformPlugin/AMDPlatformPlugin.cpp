@@ -10,6 +10,28 @@
 #define super IOPlatformPluginFamilyPriv
 
 bool AMDPlatformPlugin::start(IOService *provider) {
+	if (!super::start(provider)) {
+		IOLog("%s@%s: failed to start superclass!!!", this->getMetaClass()->getClassName(), __FUNCTION__);
+		return false;
+	}
+
+	this->monitor = AMDPlatformPluginMonitor::withPlatformPlugin(this);
+	if (this->monitor == nullptr) {
+		IOLog("%s@%s: failed to allocate monitor!!!", this->getMetaClass()->getClassName(), __FUNCTION__);
+		super::stop(provider);
+		return false
+	}
+
+	OSDictionary *dict = IOService::serviceMatching("AMDPlatformPluginInterface");
+	UInt32 count = dict->getCount();
+	for (int i = 0; i < count; i++) {
+		IOReturn ret = this->monitor->registerInterface(dict->getObject(i));
+		if (ret) {
+			IOLog("%s@%s: failed to register interface @ idx %d", this->getMetaClass()->getClassName(), __FUNCTION__, i);
+			super::stop(provider);
+			return false;
+		}
+	}
 	return true;
 };
 
